@@ -1,6 +1,4 @@
-<<<<<<< HEAD
-#CS225
-=======
+
 # CS225
 
 
@@ -21,4 +19,4 @@ git remote add origin https://github.com/Geyuhao/CS225.git
 git push -u origin main
 
 ###在命令行一步步输####
->>>>>>> a37357295b72f963417b6de61f6105ab3d0814fb
+
