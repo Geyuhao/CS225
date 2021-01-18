@@ -16,3 +16,5 @@ git branch -M main
 git remote add origin https://github.com/Geyuhao/CS225.git
 
 git push -u origin main
+
+###在命令行一步步输####
