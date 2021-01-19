@@ -39,7 +39,7 @@
 
  关于Branch的设立和使用：
  
- 1.  "git branch" 查看本地同步的分支，现在有FGSJ、gyh、lhn三个branch
+ 1.  "git branch" 查看本地同步的分支，目前远端已经创立好了所有四个分支，我这里本地也已经同步了四个分支。
  
  1-1."git remote show origin"将会查看远端和本地的所有分支以及对应的情况。如果我创建了一个新的分支，你可以通过该命令看到远端有这个分支而你本地没有，你可以执行“git fetch“将分支进行同步。我已经把每个人相对应的分支设立好了，你们就不用再进行创建分支的操作，只需要执行“git fetch"进行一下分支的同步就可以。以后要是会用到再研究。更多详细的操作可以看：https://blog.csdn.net/weixin_44598071/article/details/87818200?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-1.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-1.control
  
