@@ -1,5 +1,11 @@
 # CS225
 
+ 关于之后的任务是否要使用GitHub：
+  
+  1.最开始的Assignments的代码量可能还没那么大，可能基本用不大到，但是我了解了一下挺多组都会用GitHub的。yi fang m
+
+
+
  关于Branch的设立和使用：
  
  1.  "git branch" 查看本地同步的分支，现在有FGSJ、gyh、lhn三个branch
