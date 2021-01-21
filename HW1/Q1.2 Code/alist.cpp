@@ -12,6 +12,18 @@
 using std::cout;
 using std::cin;
 
+// HW1 Q1.2
+template<class T> int AList<T>::delete_last(int num) {
+    if ((numitems - num == maxsize/4) && (maxsize > minsize)) {
+        deallocate();
+    }
+    if (num <= numitems && num >=1) {
+        numitems -= num;
+        cout << "current numitems are " << numitems << "\n";
+    } 
+    return (numitems>0);
+}
+
 template<class T> T &AList<T>::operator[](int index)
 {
     return reprarray[index - 1];
@@ -192,17 +204,3 @@ template<class T> bool AList<T>::sublist(AList<T> &list)
     return result;
 }
 
-// HW1 Q1.2
-template<class T> int AList<T>::delete_last(int num) {
-    if ((numitems - num == maxsize/4) && (maxsize > minsize)) {
-        deallocate();
-    }
-    if (num <= numitems && num >=1) {
-        numitems -= num;
-        cout << "current numitems are " << numitems << "\n";
-    } else if (num > numitems) {
-        cout << "Please enter correct number\n";
-        return 0;
-    }
-    return (numitems>0);
-}
