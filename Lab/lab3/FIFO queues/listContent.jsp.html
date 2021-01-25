@@ -1,0 +1,969 @@
+<!DOCTYPE HTML ><!-- \web\content\listContent.jsp -->
+
+
+<html  lang="zh-CN-zju">
+ <head>
+  <title>FIFO queues &ndash; CS225:DataStructures-LEC-1439(20-21)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta id="request-method" name="request-method" content="GET">
+  <meta name="author" content="Blackboard">
+  <meta name="copyright" content="&copy; 1997-2021 Blackboard Inc. 保留所有权利。美国专利号：7,493,396 和 7,558,853。其他专利待决。">
+  <meta name="keywords" content="Blackboard">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="-1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  
+  <link rel="SHORTCUT ICON" type="image/x-icon" href="/ui/bb-icon2.ico">
+     <link rel="stylesheet" type="text/css" href="/common/shared.css?v=3300.0.1-rel.37+c07f12a" id="css_0">
+     <link rel="stylesheet" type="text/css" href="/themes/as_2012/theme.css?v=3300.0.1-rel.37+c07f12a" id="css_1">
+     <link rel="stylesheet" type="text/css" href="/themes/as_2012/app_nav.css?v=3300.0.1-rel.37+c07f12a" id="css_2">
+     <link rel="stylesheet" type="text/css" href="/branding/_1_1/brand.css?ts=1607071170000&v=3300.0.1-rel.37+c07f12a" id="css_3">
+          <style type="text/css" id="courseMenuCustomCSS">
+
+.noteditmode .listCm .courseMenu a:hover span, 
+.noteditmode .listCm .courseMenu a:focus span {
+	color:#003366!important;
+}
+
+
+#courseMenuPalette div.navPaletteContent ul li a,
+#courseMenuPalette h3 a,
+#previewCourseMenu h3 a,
+.navPaletteContent h3 a.submenuLink:before,
+.navPaletteContent h3 a.submenuLink_active:before,
+#courseMenuPalette div.navPaletteContent ul li a span,
+#courseMenuPalette .navPaletteContent .subhead
+{
+  color: #003366;
+  text-shadow: none;
+}
+
+#courseMenuPalette ul.courseMenu li.divider hr
+{
+  background-color: #003366;
+}
+
+#courseMenuPalette ul.courseMenu li h4
+{
+  color: #003366;
+}
+
+#courseMenuPalette h4.treehead
+{
+  color: #003366;
+}
+
+#courseMenuPalette div.navPaletteContent
+{
+  background-color: #FFFFFF;
+}
+
+/*Active course menu view bubble stem*/
+#courseMenuPalette .actionBarMicro .active > a:after {
+ 	border-bottom-color: #FFFFFF;
+}
+
+
+</style>
+      <style type="text/css">.topGlobalLinks a.home{background-image:url(/images/console/icons/home_0.gif)}.bottom-buttons-home a{background-image:url(/images/console/icons/home_0.gif);background-repeat:no-repeat;background-position:50% 0}.topGlobalLinks a.help{background-image:url(/images/console/icons/help_0.gif)}.bottom-buttons-help a{background-image:url(/images/console/icons/help_0.gif);background-repeat:no-repeat;background-position:50% 0}.topGlobalLinks a.logout{background-image:url(/images/console/icons/logout_0.gif)}.global-nav-bar .logout-link,.global-nav-bar .logout-link:hover,.global-nav-bar .logout-link:focus{background-image:url(/images/console/icons/logout_0.gif);background-repeat:no-repeat;background-position:50% 0}</style>
+       <link rel="stylesheet" type="text/css" media="print" href="/ui/styles/print.css?v=3300.0.1-rel.37+c07f12a">
+    <script type="text/javascript" src="/javascript/i18n.js?v=3300.0.1-rel.37+c07f12a"></script>
+      <script language='javascript' type='text/javascript'>
+
+var JS_RESOURCES = new Object();
+
+function _init_bundle_JS_RESOURCES() {
+
+    JS_RESOURCES['validation.email'] = '必须输入一个完全合格的电子邮件地址 (例如，info@blackboard.com)。';
+    JS_RESOURCES['validation.radio.required'] = '进行选择以继续操作。';
+    JS_RESOURCES['assessment.incomplete.confirm.backtrackProhibited.survey'] = '以下问题可能未回答完毕:\n {0}\n单击“取消”返回到调查。单击“确定”保存未完成的答案。';
+    JS_RESOURCES['common.list.separator.comma'] = '{0}, {1}';
+    JS_RESOURCES['active.filter.search.terms'] = '搜索词条';
+    JS_RESOURCES['validation.maximum_length.plural'] = '包含的字符不得超过 {1} 个：{0}。\n将输入值的大小减少 {2} 个字符。';
+    JS_RESOURCES['assessment.incomplete.confirm.backtrackProhibited'] = '以下问题可能不完整:\n {0}\n单击“取消”返回到测试。单击“确定”保存不完整的答案。';
+    JS_RESOURCES['validation.multiSelect.minItems'] = '多选框应包含至少 {0} 个条目。';
+    JS_RESOURCES['validation.cmp_field.required'] = '{1} 字段不为空时，\n必须为 {0} 提供一个值';
+    JS_RESOURCES['warning.email'] = '电子邮件地址是建议字段。没有电子邮件地址，用户将无法使用系统的部分功能。';
+    JS_RESOURCES['validation.maximum_length.no_name.singular'] = '不能包含多于 {0} 个的字符。\n将输入的大小减少一个字符。';
+    JS_RESOURCES['validation.multiSelect.maxItems'] = '多选框包含的条目不应超过 {0} 个。';
+    JS_RESOURCES['validation.number'] = '必须输入有效数值： {0}。';
+    JS_RESOURCES['portalmodule.section.remove'] = '删除: {0}？';
+    JS_RESOURCES['show.helptext'] = '显示帮助文本';
+    JS_RESOURCES['validation.date.required'] = '必须提供一个完整日期值：{0}。';
+    JS_RESOURCES['validation.password'] = '密码不能为空或仅包含空格。';
+    JS_RESOURCES['validation.mismatch'] = '输入的值不匹配：{0}。\n确认： {0}。';
+    JS_RESOURCES['validation.percent'] = '必须输入 0 到 100 之间的有效百分比值。';
+    JS_RESOURCES['validation.maximum_length.no_name.plural'] = '不能包含多于 {0} 个的字符。\n将输入的大小减少 {1} 个字符。';
+    JS_RESOURCES['field_name.substitute'] = '\'\'{0}\'\' 输入字段';
+    JS_RESOURCES['validation.invalid_value'] = '输入了无效数字值： {0}.';
+    JS_RESOURCES['validation.required'] = '必须提供一个值： {0}。';
+    JS_RESOURCES['validate.alignment.missing.content'] = '您选择了对齐，但未选择任何要复制的可对齐的内容。';
+    JS_RESOURCES['active.filter.free.form.text.blank'] = '为搜索文本字段指定一个值';
+    JS_RESOURCES['validation.system_role.reserve'] = '角色 ID 的开头不允许出现“bb”。';
+    JS_RESOURCES['validation.date_past'] = '结束日期不能早于开始日期。';
+    JS_RESOURCES['confirm.delete_item_value'] = '将删除此条目{0}。是否继续？';
+    JS_RESOURCES['validation.invalid_chars'] = '包含非法字符:{0}。\n删除这些字符: {1}';
+    JS_RESOURCES['hide.helptext'] = '隐藏帮助文本';
+    JS_RESOURCES['validate.range.lessthen.str'] = '小于 {0}';
+    JS_RESOURCES['validate.login.invalid.username.or.pass'] = '输入用户名和密码。';
+    JS_RESOURCES['validation.date_past.confirm'] = '时间是过去的时间。\n继续使用此时间吗？';
+    JS_RESOURCES['validation.negative'] = '必须输入一个有效的非负值：{0}。';
+    JS_RESOURCES['validation.url'] = '必须输入一个有效的 URL (例如，http://www.myschool.edu)。';
+    JS_RESOURCES['validate.range.overlap'] = '标准 ({0}) 与标准 ({1}) 重叠。';
+    JS_RESOURCES['validate.range.between.str'] = '{0} 和 {1} 之间';
+    JS_RESOURCES['validation.portal.tool.items.remove'] = '删除: {0}？';
+    JS_RESOURCES['validation.association.refresh.confirm'] = '关联项目的信息可能已更新。\n单击“确定”刷新列表或单击“取消”保持当前页面。';
+    JS_RESOURCES['validate.enrolloptions.error.codeconflict'] = '"访问代码注册"选项与选择的{instructor}指导注册冲突。';
+    JS_RESOURCES['list.checkToSelectAllItems'] = '选中以选择所有条目';
+    JS_RESOURCES['validation.option.required'] = '必须从列表中选择至少一个选项。';
+    JS_RESOURCES['active.filter.changed.alert'] = '标准现在包含';
+    JS_RESOURCES['vtbe.artifact.footer.validate.nameIfSaveArtifact'] = '指定一个名称以另存为可重复使用的对象。';
+    JS_RESOURCES['validate.invalidate.number'] = '请输入有效数字而不是 {0}。';
+    JS_RESOURCES['validation.valid_course_id'] = '课程 id 包含非法字符或多字节字符。';
+    JS_RESOURCES['assessment.incomplete.confirm'] = '以下问题可能不完整:\n {0}\n单击“取消”返回到测试。单击“确定”提交测验。';
+    JS_RESOURCES['validate.enrolloptions.error.nooption'] = '警告: 选择"由 {instructor} 指导"或"自行注册"选项。';
+    JS_RESOURCES['validation.date_equal'] = '开始日期不能等于结束日期。';
+    JS_RESOURCES['validation.cmp_field.rejected'] = '没有相应 {1} 值，{0} 无法使用。';
+    JS_RESOURCES['validation.time.required'] = '必须提供一个完整时间值：{0}。';
+    JS_RESOURCES['validation.integer_number'] = '必须输入有效整数值: {0}。';
+    JS_RESOURCES['validation.maximum_length'] = '长度不得超过 255 个字符';
+    JS_RESOURCES['validate.enrolloptions.error.emailrequestconflict'] = '所选的电子邮件注册选项与自行注册选项发生冲突。';
+    JS_RESOURCES['validate.range.morethen.str'] = '大于 {0}';
+    JS_RESOURCES['invalid_char.space'] = '空格';
+    JS_RESOURCES['notification.submit'] = '操作已提交。\n请候至操作完成。';
+    JS_RESOURCES['validation.plain_text.confirm'] = '要在文档中正确显示公式，必须选择“智能文本”或“HTML”格式。\n单击“确定”以所选的“纯文本”格式保存或单击“取消”选择新格式。';
+    JS_RESOURCES['validation.allow_negtive.percent'] = '必须输入有效的百分比值 (介于 -100 和 100 之间)。';
+    JS_RESOURCES['invalid_char.comma'] = '逗号';
+    JS_RESOURCES['confirm.remove_item'] = '此操作为最终操作且无法撤销。是否继续？';
+    JS_RESOURCES['list.uncheckToDeselectAllItems'] = '取消选中以取消选择所有条目';
+    JS_RESOURCES['validation.maximum_length.singular'] = '包含的字符不得超过 {1} 个：{0}。\n将输入值的大小减少一个字符。';
+    JS_RESOURCES['vtbe.artifact.footer.validate.saveLocationIfSaveArtifact'] = '为可重复使用的对象指定位置。';
+    JS_RESOURCES['validation.minimum_length'] = '必须输入最少 {0} 个字符：{1}。';
+    JS_RESOURCES['assessment.incomplete.confirm.survey'] = '以下问题可能未回答完毕:\n {0}\n单击“取消”返回到调查。单击“确定”提交测验。';
+    JS_RESOURCES['validation.image_type'] = '未知图像类型：{0}。图像可能无法正常显示。';
+    JS_RESOURCES['validate.invalidate.number.space'] = '空格';
+
+    JS_RESOURCES.getString = i18n_get_string;
+    JS_RESOURCES.getFormattedString = i18n_get_formatted_string;
+
+}
+
+_init_bundle_JS_RESOURCES();
+
+</script>
+<script language='javascript' type='text/javascript'>
+
+var LOCALE_SETTINGS = new Object();
+
+function _init_bundle_LOCALE_SETTINGS() {
+
+    LOCALE_SETTINGS['LOCALE_SETTINGS.ADDRESS_FIELD_ORDER'] = 'STREET_1 STREET_2 CITY STATE ZIP_CODE COUNTRY';
+    LOCALE_SETTINGS['number_format.exponent'] = 'eE';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.YEAR_CHARACTER.03255'] = '';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.NAME.COLUMN.2'] = '{1}';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.CALENDAR_COLUMN_FORMAT_MONTH.03255'] = 'ddd';
+    LOCALE_SETTINGS['BBI18N.SOLARIS_CHARSET'] = 'ISO8859-1';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.NAME.COLUMN.1'] = '{0}';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.internal_date_format'] = 'yy/MM/dd';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.CALENDAR_TITLE_FORMAT_MONTH.03259'] = 'yyyy 年 M 月';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.TIME_ORDER.00519'] = 'PHM';
+    LOCALE_SETTINGS['float.format'] = '^([0-9]{1,3}(\\,[0-9]{3})*(\\.[0-9]+)?|\\.[0-9]+)?$';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.NAME.SORT_COLUMN'] = 'familyName';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.SHORT'] = '{3} {1}';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.DAY_SHORT.02097'] = '星期日 星期一 星期二 星期三 星期四 星期五 星期六';
+    LOCALE_SETTINGS['float.allow.negative.format'] = '^((([-]?[0-9]{1,3}(\\,[0-9]{3})*)|[-]?[0-9]*)(\\.[0-9]+)?|\\.[0-9]+)?$';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.CALENDAR_TYPE'] = 'GREGORIAN';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.GIVEN_INITIAL_FAMILY_NAME'] = '{4} {3}';
+    LOCALE_SETTINGS['efloat.format'] = '^[+-]?[0-9]*(\\.[0-9]+)?([eE][+-]?[0-9]+)?$';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.CALENDAR_TITLE_FORMAT_WEEK.03260'] = 'yyyy 年 M 月 d {\'&#8212;\'[ yyyy][ M]d} 日';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.MONTH_FULL.02100'] = '1月 2月 3月 4月 5月 6月 7月 8月 9月 10月 11月 12月';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.NUMBERS_HIJRI_LOCALIZED.00521'] = 'NO';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.LONG'] = '{0} {3} {2} {1}';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.MONTH_FULL_HIJRI.02100'] = 'Muḥarram,Ṣafar,Rabīʿ\'al-Awwal,Rabīʿ\'ath-Thānī,Jumādā\'al-Ūlā,Jumādā\'ath-Thāniya,Rajab,Shaʿbān,Ramaḍān,Shawwāl,Dhū\'al-Qaʿda,Dhū\'al-Ḥijja';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.REPORT_FONT_NAME.03169'] = 'ARIAL.TTF';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.WORK_FIELD_ORDER'] = 'JOB_TITLE DEPARTMENT COMPANY B_PHONE_1 B_PHONE_2 B_FAX';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.GREETING'] = '欢迎，{1}';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.MONTH_SHORT.00520'] = '1月 2月 3月 4月 5月 6月 7月 8月 9月 10月 11月 12月';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.REPORT_FONT_SIZE.03168'] = '8';
+    LOCALE_SETTINGS['number_format.thousands_sep'] = ',';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.CALENDAR_COLUMN_FORMAT_WEEK.03256'] = 'M 月 d 日 ddd';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.SHORT_SURNAME'] = '{3} {1}';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.AM_PM.00522'] = 'AM PM';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.DATE_ORDER.00519'] = 'YMD';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.PHONE_FIELD_ORDER'] = 'H_PHONE_1 H_PHONE_2 H_FAX M_PHONE';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.DAY_MIN.02099'] = '周日 周一 周二 周三 周四 周五 周六';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.24HR_SUPPORT.03208'] = '0';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.REPORT_FONT_PATH.03170'] = 'C:/WINNT/Fonts';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.FIRST_DAY_OF_WEEK.03207'] = '0';
+    LOCALE_SETTINGS['BBI18N.WINDOWS_CHARSET'] = 'ISO-8859-1';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.MONTH_SHORT_HIJRI.00520'] = 'Muḥarram,Ṣafar,Rabīʿ\'I,Rabīʿ\'II,Jumādā\'I,Jumādā\'II,Rajab,Shaʿbān,Ramaḍān,Shawwāl,Dhū\'al-Qaʿda,Dhū\'al-Ḥijja';
+    LOCALE_SETTINGS['BBI18N.LINUX_CHARSET'] = 'iso88591';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.DAY_CHARACTER.03253'] = '';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.MONTH_CHARACTER.03254'] = '';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.NAME.COLUMN_ORDER'] = 'title,givenName,middleName,familyName,suffix,otherName';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.CALENDAR_TITLE_FORMAT_DAY.03258'] = 'yyyy 年 M 月 d 日 dddd';
+    LOCALE_SETTINGS['number_format.decimal_point'] = '.';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.DAYS.00521'] = '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.DAY_FULL.02098'] = '星期日 星期一 星期二 星期三 星期四 星期五 星期六';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.date_display_pattern'] = '年/月/日';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.EXTENDED_SURNAME'] = '{3}';
+    LOCALE_SETTINGS['thousand.sep.format'] = ',';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.NUMBERS_HIJRI.00521'] = '0 1 2 3 4 5 6 7 8 9';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.ADDRESS_ORDER.07832'] = 'street,city,region,postal_code,country';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.CALENDAR_COLUMN_FORMAT_DAY.03257'] = 'M 月 d 日 dddd';
+
+    LOCALE_SETTINGS.getString = i18n_get_string;
+    LOCALE_SETTINGS.getFormattedString = i18n_get_formatted_string;
+
+}
+
+_init_bundle_LOCALE_SETTINGS();
+
+</script>
+
+      <script language='javascript' type='text/javascript'>
+
+var LOCALE_SETTINGS = new Object();
+
+function _init_bundle_LOCALE_SETTINGS() {
+
+    LOCALE_SETTINGS['LOCALE_SETTINGS.ADDRESS_FIELD_ORDER'] = 'STREET_1 STREET_2 CITY STATE ZIP_CODE COUNTRY';
+    LOCALE_SETTINGS['number_format.exponent'] = 'eE';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.YEAR_CHARACTER.03255'] = '';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.NAME.COLUMN.2'] = '{1}';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.CALENDAR_COLUMN_FORMAT_MONTH.03255'] = 'ddd';
+    LOCALE_SETTINGS['BBI18N.SOLARIS_CHARSET'] = 'ISO8859-1';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.NAME.COLUMN.1'] = '{0}';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.internal_date_format'] = 'yy/MM/dd';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.CALENDAR_TITLE_FORMAT_MONTH.03259'] = 'yyyy 年 M 月';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.TIME_ORDER.00519'] = 'PHM';
+    LOCALE_SETTINGS['float.format'] = '^([0-9]{1,3}(\\,[0-9]{3})*(\\.[0-9]+)?|\\.[0-9]+)?$';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.NAME.SORT_COLUMN'] = 'familyName';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.SHORT'] = '{3} {1}';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.DAY_SHORT.02097'] = '星期日 星期一 星期二 星期三 星期四 星期五 星期六';
+    LOCALE_SETTINGS['float.allow.negative.format'] = '^((([-]?[0-9]{1,3}(\\,[0-9]{3})*)|[-]?[0-9]*)(\\.[0-9]+)?|\\.[0-9]+)?$';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.CALENDAR_TYPE'] = 'GREGORIAN';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.GIVEN_INITIAL_FAMILY_NAME'] = '{4} {3}';
+    LOCALE_SETTINGS['efloat.format'] = '^[+-]?[0-9]*(\\.[0-9]+)?([eE][+-]?[0-9]+)?$';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.CALENDAR_TITLE_FORMAT_WEEK.03260'] = 'yyyy 年 M 月 d {\'&#8212;\'[ yyyy][ M]d} 日';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.MONTH_FULL.02100'] = '1月 2月 3月 4月 5月 6月 7月 8月 9月 10月 11月 12月';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.NUMBERS_HIJRI_LOCALIZED.00521'] = 'NO';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.LONG'] = '{0} {3} {2} {1}';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.MONTH_FULL_HIJRI.02100'] = 'Muḥarram,Ṣafar,Rabīʿ\'al-Awwal,Rabīʿ\'ath-Thānī,Jumādā\'al-Ūlā,Jumādā\'ath-Thāniya,Rajab,Shaʿbān,Ramaḍān,Shawwāl,Dhū\'al-Qaʿda,Dhū\'al-Ḥijja';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.REPORT_FONT_NAME.03169'] = 'ARIAL.TTF';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.WORK_FIELD_ORDER'] = 'JOB_TITLE DEPARTMENT COMPANY B_PHONE_1 B_PHONE_2 B_FAX';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.GREETING'] = '欢迎，{1}';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.MONTH_SHORT.00520'] = '1月 2月 3月 4月 5月 6月 7月 8月 9月 10月 11月 12月';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.REPORT_FONT_SIZE.03168'] = '8';
+    LOCALE_SETTINGS['number_format.thousands_sep'] = ',';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.CALENDAR_COLUMN_FORMAT_WEEK.03256'] = 'M 月 d 日 ddd';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.SHORT_SURNAME'] = '{3} {1}';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.AM_PM.00522'] = 'AM PM';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.DATE_ORDER.00519'] = 'YMD';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.PHONE_FIELD_ORDER'] = 'H_PHONE_1 H_PHONE_2 H_FAX M_PHONE';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.DAY_MIN.02099'] = '周日 周一 周二 周三 周四 周五 周六';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.24HR_SUPPORT.03208'] = '0';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.REPORT_FONT_PATH.03170'] = 'C:/WINNT/Fonts';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.FIRST_DAY_OF_WEEK.03207'] = '0';
+    LOCALE_SETTINGS['BBI18N.WINDOWS_CHARSET'] = 'ISO-8859-1';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.MONTH_SHORT_HIJRI.00520'] = 'Muḥarram,Ṣafar,Rabīʿ\'I,Rabīʿ\'II,Jumādā\'I,Jumādā\'II,Rajab,Shaʿbān,Ramaḍān,Shawwāl,Dhū\'al-Qaʿda,Dhū\'al-Ḥijja';
+    LOCALE_SETTINGS['BBI18N.LINUX_CHARSET'] = 'iso88591';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.DAY_CHARACTER.03253'] = '';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.MONTH_CHARACTER.03254'] = '';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.NAME.COLUMN_ORDER'] = 'title,givenName,middleName,familyName,suffix,otherName';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.CALENDAR_TITLE_FORMAT_DAY.03258'] = 'yyyy 年 M 月 d 日 dddd';
+    LOCALE_SETTINGS['number_format.decimal_point'] = '.';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.DAYS.00521'] = '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.DAY_FULL.02098'] = '星期日 星期一 星期二 星期三 星期四 星期五 星期六';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.date_display_pattern'] = '年/月/日';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.EXTENDED_SURNAME'] = '{3}';
+    LOCALE_SETTINGS['thousand.sep.format'] = ',';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.NUMBERS_HIJRI.00521'] = '0 1 2 3 4 5 6 7 8 9';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.ADDRESS_ORDER.07832'] = 'street,city,region,postal_code,country';
+    LOCALE_SETTINGS['LOCALE_SETTINGS.CALENDAR_COLUMN_FORMAT_DAY.03257'] = 'M 月 d 日 dddd';
+
+    LOCALE_SETTINGS.getString = i18n_get_string;
+    LOCALE_SETTINGS.getFormattedString = i18n_get_formatted_string;
+
+}
+
+_init_bundle_LOCALE_SETTINGS();
+
+</script>
+
+         <script type="text/javascript" src="/javascript/cdn.js"></script>
+    <script type="text/javascript" src="/groupjs/D2880A616A5456D8745E497ED8290890.js?v=3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/webapps/blackboard/dwr_open/interface/UserDataDWRFacade.js?v=3300.0.1-rel.37+c07f12a_3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/webapps/blackboard/dwr_open/interface/MashupDWRFacade.js?v=3300.0.1-rel.37+c07f12a_3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/javascript/mathImg.js?v=3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/javascript/titlebartagutils.js?v=3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/javascript/ngui/inventoryList.js?v=3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/webapps/blackboard/dwr_open/interface/CourseMenuDWRFacade.js?v=3300.0.1-rel.37+c07f12a_3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/webapps/blackboard/dwr_open/interface/UserPageInstructionsSettingDWRFacade.js?v=3300.0.1-rel.37+c07f12a_3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/javascript/dwr/engine.js?v=3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/javascript/ngui/breadcrumbs.js?v=3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/javascript/ngui/tree.js?v=3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/javascript/ngui/coursemenu.js?v=3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/javascript/dwr/util.js?v=3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/groupjs/A7FBA1812A16F7B3A7EE241BE486ED42.js?v=3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/webapps/blackboard/dwr_open/interface/UserDWRFacade.js?v=3300.0.1-rel.37+c07f12a_3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/webapps/bb-social-learning-BBLEARN/js/mybb.js?v=3300.0.1-rel.37+c07f12a_3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/webapps/portal/overlay/welcomeOverlay.js?v=3300.0.1-rel.37+c07f12a_3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/webapps/blackboard/dwr_open/interface/ToolActivityService.js?v=3300.0.1-rel.37+c07f12a_3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/webapps/bb-gate-BBLEARN/js/tool_service.js?v=3300.0.1-rel.37+c07f12a_3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/webapps/bb-social-learning-BBLEARN/js/social.js?v=3300.0.1-rel.37+c07f12a_3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/webapps/blackboard/dwr_open/interface/ProfileProviderService.js?v=3300.0.1-rel.37+c07f12a_3300.0.1-rel.37+c07f12a"></script>
+    <script type="text/javascript" src="/groupjs/6755E0AA73F69DC1EAF91948A62C665B.js?v=3300.0.1-rel.37+c07f12a"></script>
+    </head>
+  <body id="testid" >
+  
+<h1 class="hideoff hideFromQuickLinks">打开快速链接</h1><div id=quick_links_wrap><a id=quick_links_lightbox_link href="#" onclick="quickLinks.lightboxHelper.toggleLightbox(); return false;" role=button aria-haspopup=true tabindex=1 title="&#x6253;&#x5f00;&#x5feb;&#x901f;&#x94fe;&#x63a5;">快速链接</a></div><div id=quickLinksLightboxDiv class=hideoff aria-hidden=true style="display:none"><div class=ax-content><div class=content-lite><div id=quick_links_landmarks_section><h2 class=hideFromQuickLinks>页面标志</h2><ul class=shortcut-list id=quick_links_landmark_list></ul></div><div id=quick_links_headings_section><h2 class=hideFromQuickLinks>内容大纲</h2><ul class=shortcut-list id=quick_links_heading_list></ul></div></div><div id=quick_links_hotkeys_section class=legend><h2 class=hideFromQuickLinks>键盘快捷键</h2><ul class=keycombos id=quick_links_hotkey_list></ul></div></div></div><h1 class="hideoff hideFromQuickLinks"></h1><div class=global-nav-bar-wrap><div class=global-nav-bar-wrap-mobile-nav><button class="hamburger hamburger--squeeze" type=button><span class=hamburger-box><span class=hamburger-inner></span></span></button></div><div class="global-nav-bar logout"><a id="topframe.logout.label" href="/webapps/login/?action=logout" target=_top class="nav-link logout-link" title="注销"> 注销</a></div><div id=global-nav class=global-nav-bar role=navigation data-preview=false><div class=hideoff>全局菜单</div><a id=global-nav-link class="nav-link u_floatThis-right" href="#global-nav-flyout" aria-haspopup=true tabindex=1 accesskey=m role=navigation title="&#x6253;&#x5f00;&#x5168;&#x5c40;&#x5bfc;&#x822a;&#x83dc;&#x5355;"><img src="/images/ci/ng/default_profile_avatar.png" alt="" id=global-avatar dataToolTitle="用户头像图像" class=global-top-avatar /> ZJU-UIUC Institute 仇晓敏(QIU Xiaomin)<span id=badgeTotal style="visibility: hidden" title=""><span class=hideoff id=badgeAXLabel>活动更新</span><span class=badge id=badgeTotalCount title=""></span></span><img src="/images/ci/mybb/arrowDown-topnav.png" alt="展开全局导航" id=global-toggle-img class=global-toggle /></a><div id=global-nav-flyout class=flyout-menu style="display: none;" role=application><ul id=bottomButtons class=bottom-buttons><li class=bottom-buttons-home><a id="topframe.home.label" href="http://www.blackboard.com/" target=_blank class=home title="主页" role=menuitem> 主页</a></li><li class=bottom-buttons-help><a id="topframe.help.label" href="#" onClick="globalNavigation.openHelpWindow('http://support.blackboard.com/');" class=help title="帮助" role=menuitem> 帮助</a></li></ul></div></div></div>
+<!-- global_nav.jsp -->
+
+<div id="globalNavPageNavArea">
+    <table class="bouncer" summary="顶框表格" role="presentation">
+      <tr>
+        <td>
+          <div class="topTabs bgBanner" id="topTabs">
+  
+            <div class="brandingImgWrap">
+              <a href="http://company.blackboard.com/" target="_blank" title="Blackboard Learn">
+                <img  src="/branding/_1_1/emtpy.png"  alt="Blackboard Learn" title="Blackboard Learn" class="bannerImage"/>
+</a>
+            </div>
+  
+            <div class="tabWrapper-right">
+              <H2 CLASS="hideoff">顶框标签</H2>
+              <table class="appTabs transparent" id="appTabList" summary="“标签列表”表格" role="presentation">
+                <tr>
+                 <td id="MyInstitution.label"  >
+                      <a href="/webapps/portal/execute/tabs/tabAction?tab_tab_group_id=_1_1" TARGET="_top"><span>工作空间</span>
+                        <span class="hideoff"> 5的标签1</span>
+                      </a>
+                    </td>
+                  <td id="Courses.label"  class="active"  >
+                      <a href="/webapps/portal/execute/tabs/tabAction?tab_tab_group_id=_2_1" TARGET="_top"><span>课程</span>
+                        <span class="hideoff"> 5的标签2&nbsp;(活动标签)</span>
+                      </a>
+                    </td>
+                  <td id="bbcms.label"  >
+                      <a href="/webapps/portal/execute/tabs/tabAction?tab_tab_group_id=_9_1" TARGET="_top"><span>资源库</span>
+                        <span class="hideoff"> 5的标签3</span>
+                      </a>
+                    </td>
+                  <td id="意见建议"  >
+                      <a href="/webapps/portal/execute/tabs/tabAction?tab_tab_group_id=_21_1" TARGET="_top"><span>意见建议</span>
+                        <span class="hideoff"> 5的标签4</span>
+                      </a>
+                    </td>
+                  <td id="帮助"  >
+                      <a href="/webapps/portal/execute/tabs/tabAction?tab_tab_group_id=_22_1" TARGET="_top"><span>帮助</span>
+                        <span class="hideoff"> 5的标签5</span>
+                      </a>
+                    </td>
+                  </tr>
+              </table>
+              <div class="clearfloats"></div>
+            </div>
+            </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+<div id="globalNavPageContentArea">
+
+<h2 class="hideoff">
+ 当前位置
+</h2>
+
+<div id="breadcrumbs" class="breadcrumbs clearfix ">
+ <div class="breadcrumb-controls clearfix" id="breadcrumb_controls_id">
+
+
+
+
+
+<div id="helpTextToggle" class="helpLink hidden">
+  <a href="#" id="helpTextToggleLink" class="browseIcon">
+	<img id="helpTextToggleImg" src="/images/ci/ng/small_help_on2.gif" alt="关闭和打开帮助文本"/></a>
+</div>
+ <input type='hidden' name='showHelperSetting' id='showHelperSetting' value=''>
+ </div>
+
+ <div class="path  noToggle" role="navigation">
+ <ol class="clearfix">
+    	<li
+    class="root coursePath"
+        > <a href="/webapps/blackboard/execute/courseMain?course_id=_5624_1"  title="CS225:DataStructures-LEC-1439(20-21)">                  CS225:DataStructures-LEC-1439(20-21)
+              </a>      <div id="arrowContext_1"
+         class="courseArrow"       onClick="page.ContextMenu.changeArrowInBreadcrumb(1, event );">
+<span class="contextMenuContainer" style=" display: inline;" bb:menuGeneratorURL="/webapps/blackboard/execute/getCrossCourseMenuHTML?course_id=_5624_1" bb:navItem="" bb:contextParameters="" bb:menuOrder="" bb:overwriteNavItems="" bb:beforeShowFunc="">
+   
+  <a  id="cmlink_b8558412066a4e3f904e5ff7c6a727b7" onfocus="page.ContextMenu.LI(event, 'cmdiv_b8558412066a4e3f904e5ff7c6a727b7',false);" onmouseover="page.ContextMenu.LI(event, 'cmdiv_b8558412066a4e3f904e5ff7c6a727b7',false);" class="cmimg editmode jsInit   cmimg-hide" href="#contextMenu" title="课程间导航"> <img src="/images/ci/icons/cmlink_generic.gif" alt="课程间导航"  onload="page.ContextMenu.LI(event, 'cmdiv_b8558412066a4e3f904e5ff7c6a727b7',false);"></a>
+  <div id="cmdiv_b8558412066a4e3f904e5ff7c6a727b7" class="cmdiv" style="display: none;">
+   <ul id="cmul0_b8558412066a4e3f904e5ff7c6a727b7"> 
+    <li class="contextmenubar_top">
+      <a href="#close" class="close-menu">
+        <span class="close-contextmenu" data-icon="X" role="presentation" aria-hidden="true"></span>
+        <img alt="关闭菜单" src="/images/ci/ng/close_mini.gif"></a>
+    </li>      
+       </ul>   
+  </div>
+</span>
+</div>    </li>
+   	<li
+        > <a href="/webapps/blackboard/content/listContent.jsp?course_id=_5624_1&content_id=_163381_1&mode=reset"  title="Content">                  Content
+              </a>          </li>
+   	<li
+        > <a href="/webapps/blackboard/content/listContent.jsp?course_id=_5624_1&content_id=_163661_1&mode=reset"  title="Laboratory Notes">                  Laboratory Notes
+              </a>          </li>
+   	<li
+        > <a href="/webapps/blackboard/content/listContent.jsp?course_id=_5624_1&content_id=_165256_1&mode=reset"  title="Lab 3 -- January 25">                  Lab 3 -- January 25
+              </a>          </li>
+   	<li
+    class="placeholder"        >                   FIFO queues
+                        </li>
+  </ol>
+ </div>
+
+</div>
+
+<div class="locationPane">
+ <nav role="navigation" aria-label="Course Menu" id="navigationPane" class="navigationPane ">
+ 
+
+ <div id="menuWrap" class="menuWrap" >
+  <div id="puller" >
+  <a id="menuPuller" class="clickpuller" title="隐藏课程菜单" href="#">
+   <img id="expander" alt="隐藏课程菜单" src="/images/spacer.gif"/>
+  </a>
+ </div>
+<div class="menuWrap-inner">
+  <input type='hidden' name='blackboard.platform.security.NonceUtil.nonce' value='fcecf53e-b2de-4fba-ad33-2eff247b7231'><div id="courseMenuPalette" class="navPalette listCm navPaletteExpCol"><div class="actionBarMicro clearfix"><h2 class="hideoff">菜单管理选项</h2><ul class="nav clearfix u_floatThis-right"><li id="refreshMenuLink" class="secondaryButton "><a href="#" title="刷新"><span><img src="/images/ci/ng/small_refresh.gif" alt="刷新"></span></a></li><li id="courseMapButton" class="secondaryButton "><a href="#" title="在窗口中显示课程菜单"><span><img src="/images/ci/ng/small_new_window.gif" alt="在窗口中显示课程菜单"></span></a></li></ul></div><div class="navPaletteContent"><h2 class="hideoff" tabindex="-1">课程菜单:</h2><div id="courseMenuPalette_paletteTitleHeading"><div class="navPaletteTitle"><h3 aria-expanded="true"><a href="#" class="comboLink" title="收拢CS225:DataStructures-LEC-1439(20-21)" id="courseMenu_link">CS225:DataStructures-LEC-1439(20-21)</a></h3><h3><a href="/webapps/blackboard/execute/courseMain?course_id=_5624_1" target="" class="submenuLink" id="courseMenu_combo" title="转到课程首页"><img src="/images/ci/icons/generic_dbl_arrow_right.gif" alt="课程首页"></a></h3></div></div><ul id="courseMenuPalette_contents" class="courseMenu"><li id="paletteItem:_49450_1" class="clearfix "><a href="/webapps/blackboard/content/listContent.jsp?course_id=_5624_1&content_id=_163381_1&mode=reset" target="_self"><span title="Content">Content</span></a></li><li id="paletteItem:_49452_1" class="clearfix "><a href="/webapps/blackboard/content/launchLink.jsp?course_id=_5624_1&tool_id=_136_1&tool_type=TOOL&mode=view&mode=reset" target="_self"><span title="Announcement">Announcement</span></a></li><li id="paletteItem:_49451_1" class="clearfix "><a href="/webapps/blackboard/content/launchLink.jsp?course_id=_5624_1&tool_id=_137_1&tool_type=TOOL&mode=view&mode=reset" target="_self"><span title="Email">Email</span></a></li><li id="paletteItem:_49453_1" class="clearfix "><a href="/webapps/blackboard/content/launchLink.jsp?course_id=_5624_1&tool_id=_160_1&tool_type=TOOL&mode=view&mode=reset" target="_blank"><span title="Help">Help</span></a></li></ul></div></div><div id="myGroups" class="navPalette tools navPaletteExpCol"><div class="navPaletteContent"><div id="myGroups_paletteTitleHeading"><div class="navPaletteTitle"><h3 aria-expanded="true"><a href="#" id="myGroups_link" title="收拢我的小组"> 我的小组 </a></h3></div></div><ul id="myGroups_contents" class=""><li id="mygroups._10100_1"><h4 aria-expanded="false"><a class="comboLink" href="#" id="mygroups._10100_1_groupExpanderLink" title="展开Group 21 (Fu Guanshujie)">Group 21 (Fu Guanshujie)</a></h4><a class="submenuLink" href="/webapps/blackboard/execute/modulepage/viewGroup?course_id=_5624_1&group_id=_10100_1" title="转到小组主页: Group 21 (Fu Guanshujie)"><img alt="小组主页: Group 21 (Fu Guanshujie)" src="/images/ci/icons/generic_dbl_arrow_right.gif"></a><ul class="submenu" id="mygroups._10100_1_groupContents" style="display:none;"><li>&nbsp;</li></ul></li></ul></div></div>
+  </div>
+ </div>
+ </nav>
+ <div id="contentPanel" class="contentPane  ">
+<div class="shadow">
+       <div id="editmodeWrapper"> 
+ 
+  <div id="content" class="contentBox ">
+   
+<div id="pageTitleDiv" class="pageTitle clearfix ">
+
+  
+<div id="pageTitleBar" class='pageTitleIcon' tabindex="0">
+  <img src="/images/ci/sets/set01/folder_on.gif" alt="" id="titleicon"><h1 id="pageTitleHeader" tabindex="-1" ><span id="pageTitleText">
+  <span style="color:#000000;">FIFO queues</span>  </span></h1>
+        <span id="_titlebarExtraContent" class="titleButtons"></span>
+</div>
+
+
+<form name="contentForm" action="listContent.jsp?content_id=_165358_1&course_id=_5624_1" method="POST">
+    <div><!-- inline elements cannot be listed directly in a form. (it's invalid html) -->
+        <input type="hidden" name="rstatus" id="rstatus" value=""      />
+
+
+ 
+  <input type="hidden" name="reviewed_content_id" id="reviewed_content_id" value=""      />
+
+
+ 
+  <input type="hidden" name="action" id="action" value=""      />
+
+
+ 
+</div>
+  </form>
+
+  
+</div>
+
+      <div class="container clearfix" id="containerdiv">
+    <h2 class="hideoff">内容</h2>
+    <script type="text/javascript" src="/webapps/achievements/js/achievement.js"></script><script src="/javascript/scriptaculous/version_pinned_scriptaculous.js"></script><link rel="stylesheet" href="/webapps/achievements/css/achievements.css" type="text/css" media="screen" /><script type="text/javascript">
+new Ajax.Request('/webapps/achievements/checkAchievements.form', {
+method:'get',
+asynchronous:true,
+parameters: {courseId: '_5624_1', type: 1 },
+onSuccess: function(response) {
+var jsonArray = response.responseJSON;
+handleAchievements(jsonArray);
+},
+onFailure: function() { alert('Something went wrong...'); }
+});
+</script><script type="text/javascript"> Event.observe( document, "dom:loaded", function() { var language = window.navigator.userLanguage || window.navigator.language; var formatter = new Intl.DateTimeFormat(language); var minDate = new Date(2000, 0, 1); var x = document.getElementsByClassName("sofo-air-date"); for (var i = 0; i < x.length; i++) { var airDate = new Date(x[i].innerText); if (airDate.getYear() < minDate.getYear()) { var y2k = 2000; if (airDate.getYear() > 100) { y2k = 100; } airDate.setYear(airDate.getYear() + y2k); } x[i].innerText = formatter.format(airDate); }; }); </script>
+
+<!-- remember whether this list is paged -->
+<input type="hidden" name="isPaged" value="false" />
+
+<!-- begin edit paging (top) --> 
+  <!-- end top paging edit -->
+
+
+
+<!-- Begin top list actionbar /paging area -->
+ 
+<ul id="content_listContainer" class="contentList">
+
+
+
+<li id="contentListItem:_165359_1"	class="clearfix read">
+
+<img alt="内容" src="/images/ci/sets/set01/document_on.gif" class="item_icon"/>
+
+<div class="item clearfix" ID="_165359_1">
+
+ <h3>
+  <span class="reorder editmode hideme"><span><img src="/images/ci/icons/generic_updown.gif" alt="" /></span></span>
+
+
+
+     <span style="color:#000000;">header file</span>
+ </h3>
+   
+ </div>
+
+
+
+<div class="details" >
+      <div class="contextItemDetailsHeaders clearfix"><div class="detailsLabel u_floatThis-left">已附加文件:</div><div class="detailsValue u_floatThis-left"><ul class="attachments clearfix"><li><a href="/bbcswebdav/pid-165359-dt-content-rid-5899878_1/xid-5899878_1" target="_blank"><img src="/images/ci/ng/cal_year_event.gif" alt="文件">&nbsp;fifo.h</a>
+
+<span class="contextMenuContainer" style=" display: inline;" bb:menuGeneratorURL="/webapps/cmsmain/webui/courses/UIUC-1001321-h219026-4029/fifo.h?action=details&subaction=generateFileMenuItem&uniq=ai6hyh&course_id=_5624_1&ctxMenuXythosId=5899878_1&course_id=_5624_1" bb:navItem="" bb:contextParameters="" bb:menuOrder="openId_c2544a6f383b4374908114a760ab3d2f,open_with_browser_c2544a6f383b4374908114a760ab3d2f,open_with_bbdrive_c2544a6f383b4374908114a760ab3d2f,openWebId_c2544a6f383b4374908114a760ab3d2f,view360Id_c2544a6f383b4374908114a760ab3d2f,*separator*,*separator*,ax-ally-placeholder_c2544a6f383b4374908114a760ab3d2f,ax-ally-markForAxAnalysis_c2544a6f383b4374908114a760ab3d2f,*separator*,*separator*,content_settings_c2544a6f383b4374908114a760ab3d2f,content_editSettings_c2544a6f383b4374908114a760ab3d2f,content_edit_c2544a6f383b4374908114a760ab3d2f,properties_folder_c2544a6f383b4374908114a760ab3d2f,itemcarot_managerecord_c2544a6f383b4374908114a760ab3d2f,comments_tool_c2544a6f383b4374908114a760ab3d2f,subscriptions_list_c2544a6f383b4374908114a760ab3d2f,content_readfile_c2544a6f383b4374908114a760ab3d2f,content_overwrite_c2544a6f383b4374908114a760ab3d2f,passes_tool_c2544a6f383b4374908114a760ab3d2f,permissions_tool_c2544a6f383b4374908114a760ab3d2f,content_add_alignment_c2544a6f383b4374908114a760ab3d2f,content_tracking_c2544a6f383b4374908114a760ab3d2f,content_versions_c2544a6f383b4374908114a760ab3d2f,*separator*,*separator*,bookmarkId_c2544a6f383b4374908114a760ab3d2f,itemsId_c2544a6f383b4374908114a760ab3d2f,packagesId_c2544a6f383b4374908114a760ab3d2f,emailId_c2544a6f383b4374908114a760ab3d2f,removeContentFolderId_c2544a6f383b4374908114a760ab3d2f,*separator*,copyContentId_c2544a6f383b4374908114a760ab3d2f,moveContentId_c2544a6f383b4374908114a760ab3d2f,*separator*,removeContentId_c2544a6f383b4374908114a760ab3d2f,*separator*,Metadata_General_c2544a6f383b4374908114a760ab3d2f,Metadata_Dublin_Core_c2544a6f383b4374908114a760ab3d2f,Metadata_IMS_c2544a6f383b4374908114a760ab3d2f,Metadata_Full_IMS_c2544a6f383b4374908114a760ab3d2f," bb:overwriteNavItems="" bb:beforeShowFunc="">
+   
+  <a  id="cmlink_c2544a6f383b4374908114a760ab3d2f" onfocus="page.ContextMenu.LI(event, 'cmdiv_c2544a6f383b4374908114a760ab3d2f',true);" onmouseover="page.ContextMenu.LI(event, 'cmdiv_c2544a6f383b4374908114a760ab3d2f',true);" class="cmimg editmode jsInit   cmimg-hide" href="#contextMenu" title="单击获得更多选项"> <img src="/images/ci/icons/cmlink_generic.gif" alt="单击获得更多选项"  onload="page.ContextMenu.LI(event, 'cmdiv_c2544a6f383b4374908114a760ab3d2f',true);"></a>
+  <div id="cmdiv_c2544a6f383b4374908114a760ab3d2f" class="cmdiv" style="display: none;">
+   <ul id="cmul0_c2544a6f383b4374908114a760ab3d2f"> 
+    <li class="contextmenubar_top">
+      <a href="#close" class="close-menu">
+        <span class="close-contextmenu" data-icon="X" role="presentation" aria-hidden="true"></span>
+        <img alt="关闭菜单" src="/images/ci/ng/close_mini.gif"></a>
+    </li>      
+       </ul>   
+  </div>
+</span>
+  <input type="hidden" name="5899878_1_fileReadWritePermAvl" id="5899878_1_fileReadWritePermAvl" value="false"      />
+
+
+ 
+
+                 <script type="text/javascript" src="/javascript/cdn.js"></script>
+       <script type="text/javascript" src="/groupjs/B74F41EA84F659586224BB1340CC256E.js?v=3300.0.1-rel.37+c07f12a"></script>
+       <script type="text/javascript" src="/webapps/cmsmain/dirlistrightframe/dirlist.js?v=3300.0.1-rel.37+c07f12a"></script>
+       <script type="text/javascript" src="/webapps/cmsmain/static/bbDriveUtil.js?v=3300.0.1-rel.37+c07f12a"></script>
+              <script type="text/javascript">
+    (function(){
+     var f = function(){
+           if ( window.DWREngine )
+      {
+       if( DWREngine._batch )
+       {
+      	 try {DWREngine.endBatch();} catch(ignore) {}
+       }
+       try {DWREngine.beginBatch();} catch(ignore) {}
+      } 
+             page.ContextMenu.hideMenuDiv('c2544a6f383b4374908114a760ab3d2f');
+            if ( window.DWREngine )
+      {
+        try {DWREngine.endBatch();} catch(ignore) {}
+      }
+               };
+     var f2 = function()
+     {
+       if ( page.isLoaded )
+       {
+         f();
+       }
+       else
+       {
+         setTimeout( f2, 500 );
+       }
+     }
+     f2();
+    })();
+   </script>
+   (<span id="/xid-5899878_1_fileSize">514 B</span>) </li></ul></div></div>
+
+    
+  </div>
+
+ <div id="_165359_1previewModule" class="moduleSample">
+ </div>
+</li>
+
+
+
+
+<li id="contentListItem:_165360_1"	class="clearfix read">
+
+<img alt="内容" src="/images/ci/sets/set01/document_on.gif" class="item_icon"/>
+
+<div class="item clearfix" ID="_165360_1">
+
+ <h3>
+  <span class="reorder editmode hideme"><span><img src="/images/ci/icons/generic_updown.gif" alt="" /></span></span>
+
+
+
+     <span style="color:#000000;">fifo class definition</span>
+ </h3>
+   
+ </div>
+
+
+
+<div class="details" >
+      <div class="contextItemDetailsHeaders clearfix"><div class="detailsLabel u_floatThis-left">已附加文件:</div><div class="detailsValue u_floatThis-left"><ul class="attachments clearfix"><li><a href="/bbcswebdav/pid-165360-dt-content-rid-5899880_1/xid-5899880_1" target="_blank"><img src="/images/ci/ng/cal_year_event.gif" alt="文件">&nbsp;fifo.cpp</a>
+
+<span class="contextMenuContainer" style=" display: inline;" bb:menuGeneratorURL="/webapps/cmsmain/webui/courses/UIUC-1001321-h219026-4029/fifo.cpp?action=details&subaction=generateFileMenuItem&uniq=ai6hyj&course_id=_5624_1&ctxMenuXythosId=5899880_1&course_id=_5624_1" bb:navItem="" bb:contextParameters="" bb:menuOrder="openId_690d6f33f0d8455d9e37aae10c36cfa9,open_with_browser_690d6f33f0d8455d9e37aae10c36cfa9,open_with_bbdrive_690d6f33f0d8455d9e37aae10c36cfa9,openWebId_690d6f33f0d8455d9e37aae10c36cfa9,view360Id_690d6f33f0d8455d9e37aae10c36cfa9,*separator*,*separator*,ax-ally-placeholder_690d6f33f0d8455d9e37aae10c36cfa9,ax-ally-markForAxAnalysis_690d6f33f0d8455d9e37aae10c36cfa9,*separator*,*separator*,content_settings_690d6f33f0d8455d9e37aae10c36cfa9,content_editSettings_690d6f33f0d8455d9e37aae10c36cfa9,content_edit_690d6f33f0d8455d9e37aae10c36cfa9,properties_folder_690d6f33f0d8455d9e37aae10c36cfa9,itemcarot_managerecord_690d6f33f0d8455d9e37aae10c36cfa9,comments_tool_690d6f33f0d8455d9e37aae10c36cfa9,subscriptions_list_690d6f33f0d8455d9e37aae10c36cfa9,content_readfile_690d6f33f0d8455d9e37aae10c36cfa9,content_overwrite_690d6f33f0d8455d9e37aae10c36cfa9,passes_tool_690d6f33f0d8455d9e37aae10c36cfa9,permissions_tool_690d6f33f0d8455d9e37aae10c36cfa9,content_add_alignment_690d6f33f0d8455d9e37aae10c36cfa9,content_tracking_690d6f33f0d8455d9e37aae10c36cfa9,content_versions_690d6f33f0d8455d9e37aae10c36cfa9,*separator*,*separator*,bookmarkId_690d6f33f0d8455d9e37aae10c36cfa9,itemsId_690d6f33f0d8455d9e37aae10c36cfa9,packagesId_690d6f33f0d8455d9e37aae10c36cfa9,emailId_690d6f33f0d8455d9e37aae10c36cfa9,removeContentFolderId_690d6f33f0d8455d9e37aae10c36cfa9,*separator*,copyContentId_690d6f33f0d8455d9e37aae10c36cfa9,moveContentId_690d6f33f0d8455d9e37aae10c36cfa9,*separator*,removeContentId_690d6f33f0d8455d9e37aae10c36cfa9,*separator*,Metadata_General_690d6f33f0d8455d9e37aae10c36cfa9,Metadata_Dublin_Core_690d6f33f0d8455d9e37aae10c36cfa9,Metadata_IMS_690d6f33f0d8455d9e37aae10c36cfa9,Metadata_Full_IMS_690d6f33f0d8455d9e37aae10c36cfa9," bb:overwriteNavItems="" bb:beforeShowFunc="">
+   
+  <a  id="cmlink_690d6f33f0d8455d9e37aae10c36cfa9" onfocus="page.ContextMenu.LI(event, 'cmdiv_690d6f33f0d8455d9e37aae10c36cfa9',true);" onmouseover="page.ContextMenu.LI(event, 'cmdiv_690d6f33f0d8455d9e37aae10c36cfa9',true);" class="cmimg editmode jsInit   cmimg-hide" href="#contextMenu" title="单击获得更多选项"> <img src="/images/ci/icons/cmlink_generic.gif" alt="单击获得更多选项"  onload="page.ContextMenu.LI(event, 'cmdiv_690d6f33f0d8455d9e37aae10c36cfa9',true);"></a>
+  <div id="cmdiv_690d6f33f0d8455d9e37aae10c36cfa9" class="cmdiv" style="display: none;">
+   <ul id="cmul0_690d6f33f0d8455d9e37aae10c36cfa9"> 
+    <li class="contextmenubar_top">
+      <a href="#close" class="close-menu">
+        <span class="close-contextmenu" data-icon="X" role="presentation" aria-hidden="true"></span>
+        <img alt="关闭菜单" src="/images/ci/ng/close_mini.gif"></a>
+    </li>      
+       </ul>   
+  </div>
+</span>
+  <input type="hidden" name="5899880_1_fileReadWritePermAvl" id="5899880_1_fileReadWritePermAvl" value="false"      />
+
+
+ 
+
+                 <script type="text/javascript" src="/javascript/cdn.js"></script>
+       <script type="text/javascript" src="/groupjs/B74F41EA84F659586224BB1340CC256E.js?v=3300.0.1-rel.37+c07f12a"></script>
+       <script type="text/javascript" src="/webapps/cmsmain/dirlistrightframe/dirlist.js?v=3300.0.1-rel.37+c07f12a"></script>
+       <script type="text/javascript" src="/webapps/cmsmain/static/bbDriveUtil.js?v=3300.0.1-rel.37+c07f12a"></script>
+              <script type="text/javascript">
+    (function(){
+     var f = function(){
+           if ( window.DWREngine )
+      {
+       if( DWREngine._batch )
+       {
+      	 try {DWREngine.endBatch();} catch(ignore) {}
+       }
+       try {DWREngine.beginBatch();} catch(ignore) {}
+      } 
+             page.ContextMenu.hideMenuDiv('690d6f33f0d8455d9e37aae10c36cfa9');
+            if ( window.DWREngine )
+      {
+        try {DWREngine.endBatch();} catch(ignore) {}
+      }
+               };
+     var f2 = function()
+     {
+       if ( page.isLoaded )
+       {
+         f();
+       }
+       else
+       {
+         setTimeout( f2, 500 );
+       }
+     }
+     f2();
+    })();
+   </script>
+   (<span id="/xid-5899880_1_fileSize">2.698 KB</span>) </li></ul></div></div>
+
+    
+  </div>
+
+ <div id="_165360_1previewModule" class="moduleSample">
+ </div>
+</li>
+
+
+
+
+<li id="contentListItem:_165361_1"	class="clearfix read">
+
+<img alt="内容" src="/images/ci/sets/set01/document_on.gif" class="item_icon"/>
+
+<div class="item clearfix" ID="_165361_1">
+
+ <h3>
+  <span class="reorder editmode hideme"><span><img src="/images/ci/icons/generic_updown.gif" alt="" /></span></span>
+
+
+
+     <span style="color:#000000;">main test program</span>
+ </h3>
+   
+ </div>
+
+
+
+<div class="details" >
+      <div class="contextItemDetailsHeaders clearfix"><div class="detailsLabel u_floatThis-left">已附加文件:</div><div class="detailsValue u_floatThis-left"><ul class="attachments clearfix"><li><a href="/bbcswebdav/pid-165361-dt-content-rid-5899882_1/xid-5899882_1" target="_blank"><img src="/images/ci/ng/cal_year_event.gif" alt="文件">&nbsp;queuemgt.cpp</a>
+
+<span class="contextMenuContainer" style=" display: inline;" bb:menuGeneratorURL="/webapps/cmsmain/webui/courses/UIUC-1001321-h219026-4029/queuemgt.cpp?action=details&subaction=generateFileMenuItem&uniq=ai6hyl&course_id=_5624_1&ctxMenuXythosId=5899882_1&course_id=_5624_1" bb:navItem="" bb:contextParameters="" bb:menuOrder="openId_dafe9dd701434635ad6aa2dc91bccc2b,open_with_browser_dafe9dd701434635ad6aa2dc91bccc2b,open_with_bbdrive_dafe9dd701434635ad6aa2dc91bccc2b,openWebId_dafe9dd701434635ad6aa2dc91bccc2b,view360Id_dafe9dd701434635ad6aa2dc91bccc2b,*separator*,*separator*,ax-ally-placeholder_dafe9dd701434635ad6aa2dc91bccc2b,ax-ally-markForAxAnalysis_dafe9dd701434635ad6aa2dc91bccc2b,*separator*,*separator*,content_settings_dafe9dd701434635ad6aa2dc91bccc2b,content_editSettings_dafe9dd701434635ad6aa2dc91bccc2b,content_edit_dafe9dd701434635ad6aa2dc91bccc2b,properties_folder_dafe9dd701434635ad6aa2dc91bccc2b,itemcarot_managerecord_dafe9dd701434635ad6aa2dc91bccc2b,comments_tool_dafe9dd701434635ad6aa2dc91bccc2b,subscriptions_list_dafe9dd701434635ad6aa2dc91bccc2b,content_readfile_dafe9dd701434635ad6aa2dc91bccc2b,content_overwrite_dafe9dd701434635ad6aa2dc91bccc2b,passes_tool_dafe9dd701434635ad6aa2dc91bccc2b,permissions_tool_dafe9dd701434635ad6aa2dc91bccc2b,content_add_alignment_dafe9dd701434635ad6aa2dc91bccc2b,content_tracking_dafe9dd701434635ad6aa2dc91bccc2b,content_versions_dafe9dd701434635ad6aa2dc91bccc2b,*separator*,*separator*,bookmarkId_dafe9dd701434635ad6aa2dc91bccc2b,itemsId_dafe9dd701434635ad6aa2dc91bccc2b,packagesId_dafe9dd701434635ad6aa2dc91bccc2b,emailId_dafe9dd701434635ad6aa2dc91bccc2b,removeContentFolderId_dafe9dd701434635ad6aa2dc91bccc2b,*separator*,copyContentId_dafe9dd701434635ad6aa2dc91bccc2b,moveContentId_dafe9dd701434635ad6aa2dc91bccc2b,*separator*,removeContentId_dafe9dd701434635ad6aa2dc91bccc2b,*separator*,Metadata_General_dafe9dd701434635ad6aa2dc91bccc2b,Metadata_Dublin_Core_dafe9dd701434635ad6aa2dc91bccc2b,Metadata_IMS_dafe9dd701434635ad6aa2dc91bccc2b,Metadata_Full_IMS_dafe9dd701434635ad6aa2dc91bccc2b," bb:overwriteNavItems="" bb:beforeShowFunc="">
+   
+  <a  id="cmlink_dafe9dd701434635ad6aa2dc91bccc2b" onfocus="page.ContextMenu.LI(event, 'cmdiv_dafe9dd701434635ad6aa2dc91bccc2b',true);" onmouseover="page.ContextMenu.LI(event, 'cmdiv_dafe9dd701434635ad6aa2dc91bccc2b',true);" class="cmimg editmode jsInit   cmimg-hide" href="#contextMenu" title="单击获得更多选项"> <img src="/images/ci/icons/cmlink_generic.gif" alt="单击获得更多选项"  onload="page.ContextMenu.LI(event, 'cmdiv_dafe9dd701434635ad6aa2dc91bccc2b',true);"></a>
+  <div id="cmdiv_dafe9dd701434635ad6aa2dc91bccc2b" class="cmdiv" style="display: none;">
+   <ul id="cmul0_dafe9dd701434635ad6aa2dc91bccc2b"> 
+    <li class="contextmenubar_top">
+      <a href="#close" class="close-menu">
+        <span class="close-contextmenu" data-icon="X" role="presentation" aria-hidden="true"></span>
+        <img alt="关闭菜单" src="/images/ci/ng/close_mini.gif"></a>
+    </li>      
+       </ul>   
+  </div>
+</span>
+  <input type="hidden" name="5899882_1_fileReadWritePermAvl" id="5899882_1_fileReadWritePermAvl" value="false"      />
+
+
+ 
+
+                 <script type="text/javascript" src="/javascript/cdn.js"></script>
+       <script type="text/javascript" src="/groupjs/B74F41EA84F659586224BB1340CC256E.js?v=3300.0.1-rel.37+c07f12a"></script>
+       <script type="text/javascript" src="/webapps/cmsmain/dirlistrightframe/dirlist.js?v=3300.0.1-rel.37+c07f12a"></script>
+       <script type="text/javascript" src="/webapps/cmsmain/static/bbDriveUtil.js?v=3300.0.1-rel.37+c07f12a"></script>
+              <script type="text/javascript">
+    (function(){
+     var f = function(){
+           if ( window.DWREngine )
+      {
+       if( DWREngine._batch )
+       {
+      	 try {DWREngine.endBatch();} catch(ignore) {}
+       }
+       try {DWREngine.beginBatch();} catch(ignore) {}
+      } 
+             page.ContextMenu.hideMenuDiv('dafe9dd701434635ad6aa2dc91bccc2b');
+            if ( window.DWREngine )
+      {
+        try {DWREngine.endBatch();} catch(ignore) {}
+      }
+               };
+     var f2 = function()
+     {
+       if ( page.isLoaded )
+       {
+         f();
+       }
+       else
+       {
+         setTimeout( f2, 500 );
+       }
+     }
+     f2();
+    })();
+   </script>
+   (<span id="/xid-5899882_1_fileSize">4.622 KB</span>) </li></ul></div></div>
+
+    
+  </div>
+
+ <div id="_165361_1previewModule" class="moduleSample">
+ </div>
+</li>
+
+
+
+
+<li id="contentListItem:_165362_1"	class="clearfix read">
+
+<img alt="内容" src="/images/ci/sets/set01/document_on.gif" class="item_icon"/>
+
+<div class="item clearfix" ID="_165362_1">
+
+ <h3>
+  <span class="reorder editmode hideme"><span><img src="/images/ci/icons/generic_updown.gif" alt="" /></span></span>
+
+
+
+     <span style="color:#000000;">makefile</span>
+ </h3>
+   
+ </div>
+
+
+
+<div class="details" >
+      <div class="contextItemDetailsHeaders clearfix"><div class="detailsLabel u_floatThis-left">已附加文件:</div><div class="detailsValue u_floatThis-left"><ul class="attachments clearfix"><li><a href="/bbcswebdav/pid-165362-dt-content-rid-5899884_1/xid-5899884_1" target="_blank"><img src="/images/ci/ng/cal_year_event.gif" alt="文件">&nbsp;makefile</a>
+
+<span class="contextMenuContainer" style=" display: inline;" bb:menuGeneratorURL="/webapps/cmsmain/webui/courses/UIUC-1001321-h219026-4029/makefile%283%29?action=details&subaction=generateFileMenuItem&uniq=ai6hyn&course_id=_5624_1&ctxMenuXythosId=5899884_1&course_id=_5624_1" bb:navItem="" bb:contextParameters="" bb:menuOrder="openId_9f54c03d7b4e4f81bb759f8eef39ffa2,open_with_browser_9f54c03d7b4e4f81bb759f8eef39ffa2,open_with_bbdrive_9f54c03d7b4e4f81bb759f8eef39ffa2,openWebId_9f54c03d7b4e4f81bb759f8eef39ffa2,view360Id_9f54c03d7b4e4f81bb759f8eef39ffa2,*separator*,*separator*,ax-ally-placeholder_9f54c03d7b4e4f81bb759f8eef39ffa2,ax-ally-markForAxAnalysis_9f54c03d7b4e4f81bb759f8eef39ffa2,*separator*,*separator*,content_settings_9f54c03d7b4e4f81bb759f8eef39ffa2,content_editSettings_9f54c03d7b4e4f81bb759f8eef39ffa2,content_edit_9f54c03d7b4e4f81bb759f8eef39ffa2,properties_folder_9f54c03d7b4e4f81bb759f8eef39ffa2,itemcarot_managerecord_9f54c03d7b4e4f81bb759f8eef39ffa2,comments_tool_9f54c03d7b4e4f81bb759f8eef39ffa2,subscriptions_list_9f54c03d7b4e4f81bb759f8eef39ffa2,content_readfile_9f54c03d7b4e4f81bb759f8eef39ffa2,content_overwrite_9f54c03d7b4e4f81bb759f8eef39ffa2,passes_tool_9f54c03d7b4e4f81bb759f8eef39ffa2,permissions_tool_9f54c03d7b4e4f81bb759f8eef39ffa2,content_add_alignment_9f54c03d7b4e4f81bb759f8eef39ffa2,content_tracking_9f54c03d7b4e4f81bb759f8eef39ffa2,content_versions_9f54c03d7b4e4f81bb759f8eef39ffa2,*separator*,*separator*,bookmarkId_9f54c03d7b4e4f81bb759f8eef39ffa2,itemsId_9f54c03d7b4e4f81bb759f8eef39ffa2,packagesId_9f54c03d7b4e4f81bb759f8eef39ffa2,emailId_9f54c03d7b4e4f81bb759f8eef39ffa2,removeContentFolderId_9f54c03d7b4e4f81bb759f8eef39ffa2,*separator*,copyContentId_9f54c03d7b4e4f81bb759f8eef39ffa2,moveContentId_9f54c03d7b4e4f81bb759f8eef39ffa2,*separator*,removeContentId_9f54c03d7b4e4f81bb759f8eef39ffa2,*separator*,Metadata_General_9f54c03d7b4e4f81bb759f8eef39ffa2,Metadata_Dublin_Core_9f54c03d7b4e4f81bb759f8eef39ffa2,Metadata_IMS_9f54c03d7b4e4f81bb759f8eef39ffa2,Metadata_Full_IMS_9f54c03d7b4e4f81bb759f8eef39ffa2," bb:overwriteNavItems="" bb:beforeShowFunc="">
+   
+  <a  id="cmlink_9f54c03d7b4e4f81bb759f8eef39ffa2" onfocus="page.ContextMenu.LI(event, 'cmdiv_9f54c03d7b4e4f81bb759f8eef39ffa2',true);" onmouseover="page.ContextMenu.LI(event, 'cmdiv_9f54c03d7b4e4f81bb759f8eef39ffa2',true);" class="cmimg editmode jsInit   cmimg-hide" href="#contextMenu" title="单击获得更多选项"> <img src="/images/ci/icons/cmlink_generic.gif" alt="单击获得更多选项"  onload="page.ContextMenu.LI(event, 'cmdiv_9f54c03d7b4e4f81bb759f8eef39ffa2',true);"></a>
+  <div id="cmdiv_9f54c03d7b4e4f81bb759f8eef39ffa2" class="cmdiv" style="display: none;">
+   <ul id="cmul0_9f54c03d7b4e4f81bb759f8eef39ffa2"> 
+    <li class="contextmenubar_top">
+      <a href="#close" class="close-menu">
+        <span class="close-contextmenu" data-icon="X" role="presentation" aria-hidden="true"></span>
+        <img alt="关闭菜单" src="/images/ci/ng/close_mini.gif"></a>
+    </li>      
+       </ul>   
+  </div>
+</span>
+  <input type="hidden" name="5899884_1_fileReadWritePermAvl" id="5899884_1_fileReadWritePermAvl" value="false"      />
+
+
+ 
+
+                 <script type="text/javascript" src="/javascript/cdn.js"></script>
+       <script type="text/javascript" src="/groupjs/B74F41EA84F659586224BB1340CC256E.js?v=3300.0.1-rel.37+c07f12a"></script>
+       <script type="text/javascript" src="/webapps/cmsmain/dirlistrightframe/dirlist.js?v=3300.0.1-rel.37+c07f12a"></script>
+       <script type="text/javascript" src="/webapps/cmsmain/static/bbDriveUtil.js?v=3300.0.1-rel.37+c07f12a"></script>
+              <script type="text/javascript">
+    (function(){
+     var f = function(){
+           if ( window.DWREngine )
+      {
+       if( DWREngine._batch )
+       {
+      	 try {DWREngine.endBatch();} catch(ignore) {}
+       }
+       try {DWREngine.beginBatch();} catch(ignore) {}
+      } 
+             page.ContextMenu.hideMenuDiv('9f54c03d7b4e4f81bb759f8eef39ffa2');
+            if ( window.DWREngine )
+      {
+        try {DWREngine.endBatch();} catch(ignore) {}
+      }
+               };
+     var f2 = function()
+     {
+       if ( page.isLoaded )
+       {
+         f();
+       }
+       else
+       {
+         setTimeout( f2, 500 );
+       }
+     }
+     f2();
+    })();
+   </script>
+   (<span id="/xid-5899884_1_fileSize">124 B</span>) </li></ul></div></div>
+
+    
+  </div>
+
+ <div id="_165362_1previewModule" class="moduleSample">
+ </div>
+</li>
+
+</ul>
+
+
+
+
+<!-- Begin bottom list action bar. -->
+<!-- End bottom list action bar. -->
+
+
+<!-- begin edit paging (bottom) -->
+  <!-- end edit paging (bottom) -->
+
+   </div>
+   
+     </div>
+   </div> 
+   </div>
+   </div>  
+</div></div>
+
+
+
+
+  <script type="text/javascript">page.bundle.addKey('inlineconfirmation.close','关闭');page.bundle.addKey('inlineconfirmation.refresh','刷新');page.bundle.addKey('hidden.link.close.menu','菜单的末尾。单击返回到相关项目。');page.bundle.addKey('hidden.link.close.form','表格的末尾。单击返回到相关条目。');page.bundle.addKey('lightbox.loading','正在加载...');page.bundle.addKey('yt.stopped','已停止:');page.bundle.addKey('yt.playing','正在播放:');page.bundle.addKey('yt.cued','已标示:');page.bundle.addKey('yt.buffering','正在缓冲:');page.bundle.addKey('yt.paused','已暂停:');page.bundle.addKey('yt.ended','已结束:');page.bundle.addKey('yt.play','播放');page.bundle.addKey('yt.pause','暂停');page.bundle.addKey('yt.mute','静音');page.bundle.addKey('yt.unmute','取消静音');page.bundle.addKey('lightbox.overlay','{0} 已作为光箱打开，覆盖当前页面。');page.bundle.addKey('display.playerControls','播放器控件');page.bundle.addKey('display.videoPlayerControls','视频播放器控件');page.bundle.addKey('display.play','播放');page.bundle.addKey('display.stop','停止');page.bundle.addKey('display.volumeUp','调高音量');page.bundle.addKey('display.volumeDown','调低音量');page.bundle.addKey('display.mute','静音');page.bundle.addKey('display.videoStatus','视频状态');page.bundle.addKey('display.closePlayerControls','关闭播放器控件');page.bundle.addKey('display.embeddedVideoPlayer','嵌入视频播放器');page.bundle.addKey('display.of','属于');page.bundle.addKey('display.view.on.flickr','在 Flickr 上查看照片');page.bundle.addKey('mashups.content.data.msg','我们无法显示聚合内容。系统检测到无效的 URL 时会发生这种情况。请删除聚合项目，并重试以解决此问题。');page.bundle.addKey('contextmenu.frame.title','菜单框架');page.bundle.addKey('frameset.contentframe.title','内容');page.bundle.addKey('common.pair.paren','{0} ({1})');page.bundle.addKey('coursemenu.show','显示课程菜单');page.bundle.addKey('coursemenu.hide','隐藏课程菜单');page.bundle.addKey('dynamictree.expand','展开');page.bundle.addKey('dynamictree.collapse','折叠');page.bundle.addKey('dynamictree.expand.folder','展开{0}树文件夹');page.bundle.addKey('dynamictree.collapse.folder','收拢{0}树文件夹');page.bundle.addKey('dragdrop.accessible.error.chooseOption','先选择条目。');page.bundle.addKey('dragdrop.accessible.empty','没有可以重新定位的条目。');page.bundle.addKey('dragdrop.accessible.complete','已重新排序条目。');page.bundle.addKey('dragdrop.accessible.complete.nochange','没有执行排序更改。');page.bundle.addKey('closeStr','关闭');page.bundle.addKey('moreOptionsStr','单击以查看选项');page.bundle.addKey('hiddenStr','该链接已对学生隐藏');page.bundle.addKey('emptyStr','该链接没有内容');page.bundle.addKey('entryPointChangeConfirmStr','入口将更改为下一可用内容');page.bundle.addKey('subheaderColonStr','副标题: {0}');page.bundle.addKey('confirmQuickEnrollStr','您将被给予以下角色: {0}。是否继续？');page.bundle.addKey('enterSearchKeyStr','输入搜索标准。');page.bundle.addKey('courseWelcomePageLbTitle','快速设置指南');page.bundle.addKey('expandCollapse.expand.section.nocolon','展开');page.bundle.addKey('expandCollapse.collapse.section.nocolon','收拢');page.bundle.addKey('expandCollapse.expand.section.param','展开{0}');page.bundle.addKey('expandCollapse.collapse.section.param','收拢{0}');page.bundle.addKey('tool.activity.description','活动更新');page.bundle.addKey('accessDeniedMsg','访问已拒绝');page.bundle.addKey('breadcrumbs.expand','单击以展开位置导航');</script>
+  <script type="text/javascript">
+      Event.observe(window, 'load', function() {
+        displayMathImgInline( document.getElementById('content_listContainer').getElementsByTagName('img') );
+      });
+    </script>
+  
+  <script type="text/javascript">
+    function markReviewed(itemId)
+    {
+      document.contentForm.rstatus.value = "review";
+      document.contentForm.reviewed_content_id.value = itemId;
+      document.contentForm.submit();
+    }
+
+    function markUnreviewed(itemId)
+    {
+      if ( confirm("这样会将项目标记为已复查。要继续吗？") )
+      {
+        document.contentForm.rstatus.value = "unreview";
+        document.contentForm.reviewed_content_id.value = itemId;
+        document.contentForm.submit();
+      }
+    }
+    </script>
+  
+  <script type="text/javascript">
+   var course_id = "_5624_1";
+   var courseTitle = "CS225:DataStructures-LEC-1439(20-21)";
+   var confirmDeleteMenuItemMsg = "确定要删除该条目？";
+   var confirmQuickUnenrollMsg = "将删除在快速注册此课程时创建的所有用户数据。是否继续？";
+   var confirmQuickEnrollMsg = "您将被给予以下角色: 教师。是否继续？";
+   var inNewWindow = false;
+   var theCourseMenu;
+ </script>
+ 
+  <script type='text/javascript'>globalNavigation.init(); Event.observe(window, 'resize', globalNavigation.onResize);</script>
+  <script type="text/javascript">
+    page.bundle.addKey('globalnav.menu.expand','\u5C55\u5F00\u5168\u5C40\u5BFC\u822A');
+    page.bundle.addKey('globalnav.menu.collapse','\u6298\u53E0\u5168\u5C40\u5BFC\u822A');
+  </script>
+  
+  <script type="text/javascript">
+    page.bundle.addKey('quick_links.link.title','\u5728\x20\x7B0\x7D\x20\u6846\u4E2D\u5BFC\u822A\u5230\u7C7B\u578B\x20\x7B2\x7D\x20\u7684\u5143\u7D20\x20\x7B1\x7D');
+    page.bundle.addKey('quick_links.lightbox_title','\u5FEB\u901F\u94FE\u63A5');
+    page.bundle.addKey('quick_links.link_title','\u6253\u5F00\u5FEB\u901F\u94FE\u63A5');
+    page.bundle.addKey('quick_links.hotkey.shift','Shift');
+    page.bundle.addKey('quick_links.hotkey.control','Ctrl');
+    page.bundle.addKey('quick_links.hotkey.alt','Alt');
+    page.bundle.addKey('quick_links.hotkey.combination_divider','\x2B');
+  </script>
+  
+  <script type="text/javascript">quickLinks.initialize( [ 'https\x3A\x2F\x2Fui.cloud.bb' ] );</script>
+  <script type="text/javascript">
+  		            globalNavMenu.init( true );
+  		          </script>
+  		        
+  <script type='text/javascript'> social.Profile.MY_PROFILE_TOOL_ID='BB-CORE_____myProfile'; social.Profile.MY_PROFILE_TOOL_URI='/webapps/bb-social-learning-BBLEARN/execute/mybb?cmd=display&toolId=BB-CORE_____myProfile&location='; </script>
+ 
+   <script type="text/javascript">
+   FastInit.addOnLoad( function()
+   {
+            if ( window.DWREngine )
+       {
+        try {DWREngine.beginBatch();} catch(ignore) {}
+       } 
+                page.decoratePageBanner();
+                                                             new genericList.CheckboxRadioController("content_listContainer");
+                                                             page.ContextMenu.hideMenuDiv('b8558412066a4e3f904e5ff7c6a727b7');
+                                                             new page.PageHelpToggler(true, '帮助已打开：单击以隐藏帮助页面。', '帮助关闭:单击以显示帮助页面。', false );
+                                                             breadcrumbs.rightMostNavItem = 'content';
+                                                             breadcrumbs.rightMostParentURL = '/webapps/blackboard/content/listContent.jsp?course_id=_5624_1&content_id=_165256_1&mode=reset';
+                                                             new page.PageMenuToggler(true,'courseMenuToggle_5624_1', true);
+                                                             courseMenu.nonceKey = 'blackboard.platform.security.NonceUtil.nonce.ajax';
+                                                             courseMenu.nonceValue = 'f27106cb-9ada-4717-9a5a-e7daadff444b';
+                                                             new page.PaletteController('courseMenuPalette', 'courseMenu_link', false, false);
+                                                             new page.ItemExpander('mygroups._10100_1_groupExpanderLink', 'mygroups._10100_1_groupContents', '展开', '收拢', true, '/webapps/bb-group-mgmt-LEARN/execute/group/getGroupMenuItems', 'course_id=_5624_1&group_id=_10100_1', '展开Group 21 (Fu Guanshujie)','收拢Group 21 (Fu Guanshujie)');
+                                                             new page.PaletteController('myGroups', 'myGroups_link', false, false);
+                                                             theCourseMenu = new courseMenu.CourseMenu('/webapps/blackboard/execute/doCourseMenuAction', '/webapps/blackboard/execute/getCourseMenuContextMenu');
+                                                             welcomeOverlay.initOverlay();
+                                                             tool_service.init ('300000', 'Suppress-Session-Timestamp-Update' );
+                                                             if (typeof(initEditors) == 'function') { initEditors(); }; 
+                                                             if (window['org'] && window['org']['owasp']) { org.owasp.esapi.ESAPI.initialize(); }; 
+                                                             quickLinks.createHelper();
+                                                                  if ( window.DWREngine )
+       {
+         try {DWREngine.endBatch();} catch(ignore) {}
+       }
+                          BrowserSpecific.registerListeners();
+               });
+   </script>
+       
+</body>
+</html>
