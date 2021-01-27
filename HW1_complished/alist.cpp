@@ -364,7 +364,7 @@ template<class T> void AList<T>::remove(int index)
 {
     if ((numitems == maxsize / 4) && (maxsize > minsize))
         deallocate();
-    if (index < numitems)
+    if (index <= numitems)
     {
         for (int j = index; j < numitems; ++j)
         {
