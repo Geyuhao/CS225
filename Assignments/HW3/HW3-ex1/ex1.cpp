@@ -8,15 +8,29 @@ using namespace::std;
 
 template<class T> void AList<T>::find_smallest(void)
 {
+    // The length should be larger than 1
     if (maxsize < 1){
         cout << "invalid length";
         return;
     } 
 
+    // count the comparision times
     int comparison = 0;
+
+    // calculate the length of the new list
     int next_length = numitems/2;
     int remainder = numitems%2;
     int nextsize = next_length+remainder;
+
+    // build a list of pointers to AList, which records the numbers that
+    // have been compared with a specific one
+    AList<T> *relative[numitems];
+    int relative_length =0;
+    for (int i=0; i<numitems; i++)
+    {
+        relative_length++;
+        relative[i]=new AList<T>;
+    }
 
     while(nextsize != 1 || next_length == 1 ){
         for (int i=1; i<=nextsize; i++)
@@ -24,9 +38,26 @@ template<class T> void AList<T>::find_smallest(void)
             if ((i < nextsize) || (remainder == 0)){
                 T left = getitem(i);
                 T right = getitem(i+1);
+                    
+                // For the larger one, it can't be the smallest and 
+                // it's list of relative numbers is no longer needed
                 if (left<right){
+                    relative[i-1]->append(right);       // add right to left's relative number list
+                    delete relative[i];                 // delete right's relative number list
+                    relative_length--;                  // the list of pointers is shorten
+                    for (int j=i;j<relative_length;j++)
+                    {
+                        relative[j]=relative[j+1];
+                    }
                     remove(i+1);
                 } else{
+                    relative[i]->append(left);
+                    delete relative[i-1];
+                    relative_length--;
+                    for (int j=i-1;j<relative_length;j++)
+                    {
+                        relative[j]=relative[j+1];
+                    }
                     remove(i);
                 }
                 comparison ++;    // count the needed times;
@@ -36,29 +67,29 @@ template<class T> void AList<T>::find_smallest(void)
         remainder = nextsize%2;
         nextsize = next_length+remainder;
     }
-    cout<<"The smallest number is "<< getitem(1) <<endl;
-    cout<<"Need to compare "<< comparison <<" times"<<endl;
-}
+    cout<<"------------After "<< comparison <<" comparisons------------"<<endl;
+    cout<<"We find the smallest number "<< getitem(1) <<endl;
+    cout<<"Also we get the list of possible second smallest number ";
+    cout<<"Which has "<<relative[0]->getlength()<<" numbers"<<endl;
+    relative[0]->display();
 
-template<class T> void AList<T>::find_smallest2(void)
-{
-    if (numitems<2){
-        cout << "invalid length"<<endl;
-        return ;
+    int comparison2 = 0;
+    T sec_small = relative[0]->getitem(1);
+    for (int i=2; i<=relative[0]->getlength(); i++)
+    {
+        comparison2++;          // count the comparing times
+        if (sec_small>relative[0]->getitem(i)){
+            sec_small = relative[0]->getitem(i);
+        }
     }
-
-
-    T smallest = getitem(1);
-    AList<T> nextlist = 0;  //recode numbers relavant to the possible smallest number
-    int comparison = 0;
-
-
-
+    cout<<"---------After another "<< comparison2 <<" comparisons---------"<<endl;
+    cout<<"We find the second smallest number "<< sec_small <<endl;    
 }
+
 
 //----------------------end of ex1----------------------
 
-template<class T> void AList<T>::display_q4(void)
+template<class T> void AList<T>::display(void)
 {
     if (numitems == 0)
     {
@@ -78,11 +109,11 @@ template<class T> void AList<T>::gen_rand(void)
     int next = 34;
     for (int i = 1; i <= maxsize; i++)
     {
-        next = (99*i*i+100)%210;
-        //next = next*16807%2147483647/10000;
+        //next = (99*i*i+100)%210;
+        next = next*16807%2147483647/10000;
         append(next);
     }
-    display_q4();
+    display();
 }
 
 template<class T> T &AList<T>::operator[](int index)
@@ -93,17 +124,6 @@ template<class T> T &AList<T>::operator[](int index)
 template<class T> int AList<T>::getlength(void)
 {
     return numitems;
-}
-
-template<class T> void AList<T>::setitem(int index, T value)
-{
-    if ((index > 0) && (index <= numitems))
-    {
-        reprarray[index - 1] = value;
-        return;
-    }
-    else
-        cout << "Index error: index out or range\n";
 }
 
 template<class T> T AList<T>::getitem(int index)
@@ -126,27 +146,6 @@ template<class T> void AList<T>::append(T value)
     reprarray[numitems] = value;
     ++numitems;
     return;
-}
-
-template<class T> void AList<T>::insert(int index, T value)
-{
-    if (numitems == maxsize)
-        allocate();
-    if (index < numitems)
-    {
-        for (int j = numitems - 1; j >= index; --j)
-        {
-            reprarray[j+1] = reprarray[j];
-        }
-        reprarray[index] = value;
-        ++numitems;
-        return;
-    }
-    else
-    {
-        append(value);
-        return;
-    }
 }
 
 template<class T> void AList<T>::allocate(void)
@@ -192,76 +191,5 @@ template<class T> void AList<T>::deallocate(void)
     reprarray = newarray;
     maxsize = newsize;
     return;
-}
-
-template<class T> void AList<T>::concat(AList<T> &list)
-{
-    int length = list.getlength();
-    for (int i = 1; i <= length; ++i)
-    {
-        append(list[i]);
-    }
-    return;
-}
-
-template<class T> bool AList<T>::member(T value)
-{
-    bool result = false;
-    for (int i = 0; i < numitems; ++i)
-    {
-        if (reprarray[i] == value)
-        {
-            result = true;
-            break;
-        }
-    }
-    return result;
-}
-
-template<class T> bool AList<T>::equal(AList<T> &list)
-{
-    bool result = true;
-    if (numitems == list.getlength())
-    {
-        for (int i = 0; i < numitems; ++i)
-        {
-            if (reprarray[i] == list[i + 1])
-                continue;
-            else
-            {
-                result = false;
-                break;
-            }
-        }
-    }
-    else
-        result = false;
-    return result;
-}
-
-template<class T> bool AList<T>::sublist(AList<T> &list)
-{
-    int length = list.getlength();
-    bool result = true;
-    for (int i = 1, j = 0; (i <= length) && (j < numitems); ++i, ++j)
-    {
-        if (list[i] == reprarray[j])
-        {
-            if ((j == numitems - 1) && (i < length))
-            {
-                result = false;
-                break;
-            }
-        }
-        else
-            if (j == numitems - 1)
-            {
-                result = false;
-                break;
-            }
-            else
-                --i;
-    }
-    return result;
 }
 
