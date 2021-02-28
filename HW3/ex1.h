@@ -1,5 +1,6 @@
 #ifndef ex1
 #define ex1
+
 template<class T> class AList;
 
 template<class T> class AList
@@ -8,21 +9,14 @@ public:
     AList(int size = 20);
     T &operator[](int index);
     int getlength(void);
-    void setitem(int index, T value);
     T getitem(int index);
     void append(T value);
-    void insert(int index, T value);
     void remove(int index);
-    void concat(AList<T> &list);
-    bool member(T value);
-    bool equal(AList<T> &list);
-    bool sublist(AList<T> &list);
 
     //*************** Member functions declaration for HW1 ***********************
-    void display_q4 (void);
+    void display(void);
     void gen_rand(void);
     void find_smallest(void);
-    void find_smallest2(void);
 
 private:
     int maxsize, minsize;
