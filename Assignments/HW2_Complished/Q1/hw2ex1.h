@@ -17,6 +17,8 @@
 #define ex1
 
 #include <iostream>
+#include <stdio.h>
+#include <ctime>
 #include <vector>
 using namespace std;
 
@@ -95,9 +97,6 @@ template<class T> vector<T> Solution<T>::Merge_k(vector< vector<T> > llst, int k
     }
     return lst;
 }
-
-
-
 
 
 
@@ -183,12 +182,22 @@ template<class T> void Solution<T>::vec_print(vector<T> vec){
 
 // This is for testing.
 template <class T> void Solution<T>::test(int k, int t){
-    /*cout << "Self-implemented Sort:          ";
-    vec_print(SelfSort(data));*/
+    vector<T> temp;
+    //clock_t start, end;
+
+    cout << "Self-implemented Sort:          ";
+    vec_print(SelfSort(data));
     cout << "Merge Sort with K sublist:      ";
     vec_print(MergeSort_k(data, k));
-    /*cout << "Merge Sort with Insertion Sort: ";
-    vec_print(MergeSort_t(data, t, 0, data.size()-1));*/
+
+    cout << "Merge Sort with Insertion Sort: ";
+    //start = clock();
+    temp = MergeSort_t(data, t, 0, data.size()-1);
+    //end = clock();
+    //double time = (double) (end - start)/CLOCKS_PER_SEC;
+    vec_print(temp);
+    //cout << "Total time with " << t << " as thr is ";
+    //printf("%5f ms\n", time*1000);
 }
 #endif 
 
