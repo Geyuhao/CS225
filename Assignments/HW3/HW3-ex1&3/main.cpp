@@ -21,13 +21,4 @@ int main()
     testlist1.gen_rand();
     testlist1.find_smallest();
 
-    /*
-    cout<<"-------test-------"<<endl;
-    int a = testlist1.getitem(1);
-    int b = testlist1.getitem(2);
-
-    int comparison = testlist1.smallest(1,length,a,b);
-    cout<<"The smallest number is "<<a<<" The second smallest number is "<<b<<endl;
-    cout<<"we need "<<comparison<<" comparisons"<<endl;
-    */
 }
