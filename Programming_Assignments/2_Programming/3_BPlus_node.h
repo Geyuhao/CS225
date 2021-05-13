@@ -2,19 +2,22 @@
 #define BPLUS_NODE
  
 #define NULL 0
- 
+#include "1_relations.cpp" 
+
+
 enum NODE_TYPE{INTERNAL, LEAF};        // 结点类型：内结点、叶子结点
 enum SIBLING_DIRECTION{LEFT, RIGHT};   // 兄弟结点方向：左兄弟结点、右兄弟结点
-typedef float KeyType;                 // 键类型
-typedef int DataType;                  // 值类型
-const int ORDER = 7;                   // B+树的阶（非根内结点的最小子树个数）
-const int MINNUM_KEY = ORDER-1;        // 最小键值个数
-const int MAXNUM_KEY = 2*ORDER-1;      // 最大键值个数
-const int MINNUM_CHILD = MINNUM_KEY+1; // 最小子树个数
-const int MAXNUM_CHILD = MAXNUM_KEY+1; // 最大子树个数
-const int MINNUM_LEAF = MINNUM_KEY;    // 最小叶子结点键值个数
-const int MAXNUM_LEAF = MAXNUM_KEY;    // 最大叶子结点键值个数
- 
+
+
+// With overflow block added, following modifications are needed:
+	// Search: when recursive to leaf node, linear search is needed in overflow block
+	// Insert: when leaf node is not full, added into the overflow block first
+	//		   when leaf is full after adding the data, sort the elements into the main block
+	// Remove: when no merge needed, sort the targeted leaf node and remove
+	//		   when merge needed after remove, sort both targeted leaf and siblings then remove
+	// 
+
+
 // 结点基类
 class CNode{
 public:
@@ -36,9 +39,9 @@ public:
 	virtual void borrowFrom(CNode* destNode, CNode* parentNode, int keyIndex, SIBLING_DIRECTION d)=0; // 从兄弟结点中借一个键值
 	virtual int getChildIndex(KeyType key, int keyIndex)const=0;  // 根据键值获取孩子结点指针下标
 protected:
-	NODE_TYPE m_Type;
-	int m_KeyNum;
-	KeyType m_KeyValues[MAXNUM_KEY];
+	NODE_TYPE m_Type;		// denote whether it is internal node or leaf node
+	int m_KeyNum;			// keys in the block
+	KeyType m_KeyValues[MAXNUM_KEY];	// Key_Values for the B+ node will be the ID of the person
 };
  
 // 内结点
@@ -65,7 +68,7 @@ class CLeafNode : public CNode{
 public:
 	CLeafNode();
 	virtual ~CLeafNode();
- 
+  
 	CLeafNode* getLeftSibling() const {return m_LeftSibling;}
 	void setLeftSibling(CLeafNode* node){m_LeftSibling = node;}
 	CLeafNode* getRightSibling() const {return m_RightSibling;}
@@ -79,10 +82,18 @@ public:
 	virtual void clear();
 	virtual void borrowFrom(CNode* destNode, CNode* parentNode, int keyIndex, SIBLING_DIRECTION d);
 	virtual int getChildIndex(KeyType key, int keyIndex)const;
+	// added function for the required overflow block
+	void sort_overflow();		// sort the elements in overflow block into the main block
+
 private:
 	CLeafNode* m_LeftSibling;
 	CLeafNode* m_RightSibling;
-	DataType m_Datas[MAXNUM_LEAF];
+	DataType m_Datas[MAXNUM_LEAF];		// the data for each leaf node should be pointers pointing out to blocks
+	DataType overflow_block[OVERFLOW_SIZE];		// this is for the overflow block, we define the size of this as half of the block size
+	int overflow_num;		// keys in the overflow block, overflow_num + m_Keynum <= MAXMUM_KEY
+	int main_num;			// overflow_num + main_num = m_Keynum
+	
+
 };
 #endif
 

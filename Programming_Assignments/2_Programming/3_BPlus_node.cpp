@@ -162,9 +162,36 @@ void CLeafNode::clear()
 		//m_Datas[i] = NULL;
 	}
 }
+
+
+void CLeafNode::sort_overflow()
+{
+	// first put all relations in overflow block into main block
+	for (int i = 0; i < overflow_num; i++) {
+		m_Datas[main_num+i] = overflow_block[i];
+	}
+	main_num += overflow_num;
+	overflow_num = 0;
+    // insertion sort for the main block
+    for (int i = 1, j; i < main_num; i++) {
+        int temp = m_Datas[i]->Person_->people->id_number;
+		Block* temp_node = m_Datas[i];
+        for (j = i; j > 0 && temp < m_Datas[j-1]->Person_->people->id_number; j--){
+            m_Datas[j] = m_Datas[j-1];
+        } m_Datas[j] = temp_node;
+    }
+}
  
 void CLeafNode::insert(KeyType key, const DataType& data)
 {
+	if (overflow_num >= OVERFLOW_SIZE) sort_overflow();		// sort overflow block into main block
+	// insert into the overflow block
+	m_KeyValues[main_num+overflow_num] = key;
+	overflow_block[overflow_num] = data;
+	overflow_num++;
+	if (main_num + overflow_num == MAXNUM_LEAF)	sort_overflow();
+	m_KeyNum = main_num + overflow_num;		// update the number of keys
+/*
 	int i;
 	for (i=m_KeyNum; i>=1 && m_KeyValues[i-1]>key; --i)
 	{
@@ -174,6 +201,7 @@ void CLeafNode::insert(KeyType key, const DataType& data)
 	setKeyValue(i, key);
 	setData(i, data);
 	setKeyNum(m_KeyNum+1);
+*/
 }
  
 void CLeafNode::split(CNode* parentNode, int childIndex)

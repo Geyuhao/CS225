@@ -8,11 +8,9 @@
  */
 
 
-#pragma once
 
 #include <utility>
 
-#define NULL 0
 #define SEARCH_KEY_NOT_FOUND 's'
 #define REMOVE_KEY_NOT_FOUND 'r'
 
@@ -113,4 +111,3 @@ private:
 };
 
 
-#include "bTree.cpp"

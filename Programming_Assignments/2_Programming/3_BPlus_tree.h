@@ -1,7 +1,7 @@
 #ifndef BPLUS_TREE_H
 #define BPLUS_TREE_H
  
-#include "3_BPlus_node.h"
+#include "3_BPlus_node.cpp"
 #include <vector>
 using namespace std;
  
@@ -22,9 +22,9 @@ public:
 	bool remove(KeyType key);
 	bool update(KeyType oldKey, KeyType newKey);
 	// 定值查询，compareOperator可以是LT(<)、LE(<=)、EQ(=)、BE(>=)、BT(>)
-	vector<DataType> select(KeyType compareKey, int compareOpeartor);
+	vector<DataType> select_value(KeyType compareKey, int compareOpeartor);
 	// 范围查询，BETWEEN
-	vector<DataType> select(KeyType smallKey, KeyType largeKey);
+	vector<DataType> select_range(KeyType smallKey, KeyType largeKey);
 	bool search(KeyType key); // 查找是否存在
 	void clear();             // 清空
 	void print()const;        // 打印树关键字
@@ -44,6 +44,20 @@ private:
 	CLeafNode* m_DataHead;
 	KeyType m_MaxKey;  // B+树中的最大键
 };
+
+/* 
+ * Person_into_BP
+ * Input: bptree, local queue
+ * Output: None
+ * 
+ * This Function will store all the people with basic information at registration
+ * into the bptree
+ */
+void Person_into_BP(CBPlusTree* &bptree, queue<People*> &local_queue);
+
+
+
+void Regist_into_BP(CBPlusTree* &bptree, queue<People*> &local_queue);
  
 #endif
 

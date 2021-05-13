@@ -1,9 +1,26 @@
 #include "3_BPlus_tree.h"
-#include "3_BPlus_node.h"
 #include <iostream>
 #include <algorithm>
 using namespace std;
- 
+
+
+
+void Person_into_BP(CBPlusTree* &bptree, queue<People*> &local_queue)
+{
+	for (int i = 0; i < local_queue.size(); i++) {
+		People* temp = local_queue.front();
+		Person_BP* individual = new Person_BP(temp);
+		Block* BP_Data = new Block(PERSON, individual);
+
+		bptree->insert(temp->id_number, BP_Data);	// ID is used as the primary key of B+ Tree
+		local_queue.pop();
+		local_queue.push(temp);
+	}
+}
+
+
+
+
 CBPlusTree::CBPlusTree(){
 	m_Root = NULL;
 	m_DataHead = NULL;
@@ -86,13 +103,10 @@ bool CBPlusTree::recursive_search(CNode *pNode, KeyType key)const
 	if (pNode==NULL)  //检测节点指针是否为空，或该节点是否为叶子节点
 	{
 		return false;
-	}
-	else
-	{
+	} else {	// current node is not NULL
 		int keyIndex = pNode->getKeyIndex(key);
 		int childIndex = pNode->getChildIndex(key, keyIndex); // 孩子结点指针索引
-		if (keyIndex<pNode->getKeyNum() && key==pNode->getKeyValue(keyIndex))
-		{
+		if (keyIndex<pNode->getKeyNum() && key==pNode->getKeyValue(keyIndex)) {
 			return true;
 		}
 		else
@@ -253,9 +267,9 @@ bool CBPlusTree::update(KeyType oldKey, KeyType newKey)
 	}
 	else
 	{
-		int dataValue;
+		DataType dataValue;
 		remove(oldKey, dataValue);
-		if (dataValue==INVALID_INDEX)
+		if (dataValue==NULL)
 		{
 			return false;
 		}
@@ -270,7 +284,7 @@ void CBPlusTree::remove(KeyType key, DataType& dataValue)
 {
 	if (!search(key))  //不存在
 	{
-		dataValue = INVALID_INDEX;
+		dataValue = NULL;
 		return;
 	}
 	if (m_Root->getKeyNum()==1)//特殊情况处理
@@ -345,7 +359,7 @@ void CBPlusTree::recursive_remove(CNode* parentNode, KeyType key, DataType& data
 	}
 }
  
-vector<DataType> CBPlusTree::select(KeyType compareKey, int compareOpeartor)
+vector<DataType> CBPlusTree::select_value(KeyType compareKey, int compareOpeartor)
 {
 	vector<DataType> results;
 	if (m_Root!=NULL)
@@ -449,7 +463,7 @@ vector<DataType> CBPlusTree::select(KeyType compareKey, int compareOpeartor)
 	return results;
 }
  
-vector<DataType> CBPlusTree::select(KeyType smallKey, KeyType largeKey)
+vector<DataType> CBPlusTree::select_range(KeyType smallKey, KeyType largeKey)
 {
 	vector<DataType> results;
 	if (smallKey<=largeKey)

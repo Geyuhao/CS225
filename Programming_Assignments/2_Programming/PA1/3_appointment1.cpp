@@ -65,6 +65,7 @@ People* Withdraw::find(int id)
 
 
 //################ Isolated functions part ###################
+
 void appointment(Fheap<int> &fib_heap, queue<Appoint_People*> &waiting, int total_capa)
 {
     for (int i = 0; i < total_capa; i++) {
