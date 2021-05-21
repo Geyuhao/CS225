@@ -1,0 +1,10 @@
+{
+    "cSpell.words": [
+        "xiaomin"
+    ],
+    "files.associations": {
+        "queue": "cpp",
+        "iostream": "cpp",
+        "ostream": "cpp"
+    }
+}
